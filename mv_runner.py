@@ -7,84 +7,21 @@ if not os.path.exists("slurm_scripts"):
     os.makedirs("slurm_scripts")
 
 
-networks_dir = '/om/user/wwhitney/facegen_networks/'
-base_networks = {
-        'picasso':      networks_dir + 'picasso',
-        'braque':       networks_dir + 'braque',
-        'brunelleschi': networks_dir + 'brunelleschi',
-        'donatello':    networks_dir + 'donatello'
-    }
+# networks_dir = '/om/user/wwhitney/facegen_networks/'
+# base_networks = {
+#     }
 
 
-# Don't give it a `save` name - that gets generated for you
+# Don't give it a save name - that gets generated for you
 jobs = [
-        # {
-        #     'no_load': True,
-        # },
-        # {
-        #     'no_load': True,
-        #     'force_invariance': True,
-        #     'invariance_strength': 0.1
-        # }
-        # {
-        #     'no_load': True,
-        #     'force_invariance': True,
-        #     'invariance_strength': 0.01
-        # },
-        # {
-        #     'no_load': True,
-        #     'force_invariance': True,
-        #     'invariance_strength': 0.001
-        # },
-        # {
-        #     'no_load': True,
-        #     'force_invariance': True,
-        #     'invariance_strength': 0.0001
-        # },
-        # {
-        #     'import': 'brunelleschi',
-        #     'force_invariance': True,
-        #     'invariance_strength': 0.01,
-        #     'shape_bias': True,
-        #     'shape_bias_amount': 10
-
-        # },
-        # {
-        #     'import': 'brunelleschi',
-        #     'force_invariance': True,
-        #     'invariance_strength': 0.01,
-        #     'shape_bias': True,
-        #     'shape_bias_amount': 40
-
-        # },
-        # {
-        #     'import': 'brunelleschi',
-        #     'force_invariance': True,
-        #     'invariance_strength': 0.01,
-        #     'shape_bias': True,
-        #     'shape_bias_amount': 100
-
-        # }
         {
-            'import': 'donatello',
-            'force_invariance': True,
-            'invariance_strength': 0.01
-        },
-        {
-            'import': 'donatello',
-            'force_invariance': True,
-            'invariance_strength': 0.001
+
         }
-        # {
-        #     'import': 'donatello',
-        #     'shape_bias': True,
-        #     'shape_bias_amount': 400,
-        #     'learning_rate': -0.0002
-        # }
+
     ]
 
 for job in jobs:
-    jobname = "invariance_scaled"
+    jobname = "atari_reconstruction"
     flagstring = ""
     for flag in job:
         if isinstance(job[flag], bool):
@@ -121,9 +58,9 @@ for job in jobs:
     # with open(jobname + '/generating_parameters.txt', 'w') as paramfile:
     #     paramfile.write(str(job))
 
-    print ("th monovariant_main.lua" + flagstring)
+    print ("th atari_reconstruction_main.lua" + flagstring)
     if True:
-        os.system("sbatch -N 1 -c 2 --gres=gpu:1 --time=6-23:00:00 slurm_scripts/" + jobname + ".slurm &")
+        os.system("sbatch -N 1 -c 4 --gres=gpu:1 -p gpu --time=6-23:00:00 slurm_scripts/" + jobname + ".slurm &")
 
 
 

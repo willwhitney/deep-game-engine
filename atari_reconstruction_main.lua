@@ -30,7 +30,7 @@ cmd:text('Change these options:')
 cmd:option('--import',            '',             'the containing folder of the network to load in. does nothing with `no_load`')
 cmd:option('--networks_dir',      'networks',     'the directory to save the resulting networks in')
 cmd:option('--name',              'default',      'the name for this network. used for saving the network and results')
-cmd:option('--datasetdir',        'DATASET',      'dataset source directory')
+cmd:option('--datasetdir',        'dataset',      'dataset source directory')
 
 cmd:option('--dim_hidden',        200,            'dimension of the representation layer')
 cmd:option('--feature_maps',      96,             'number of feature maps')
