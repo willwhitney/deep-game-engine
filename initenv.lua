@@ -142,54 +142,6 @@ function setup(_opt)
     return gameEnv, gameActions, agent, opt
 end
 
-function setup_random_agent(_opt)
-    assert(_opt)
-
-    --preprocess options:
-    --- convert options strings to tables
-    _opt.pool_frms = str_to_table(_opt.pool_frms)
-    _opt.env_params = str_to_table(_opt.env_params)
-    _opt.agent_params = str_to_table(_opt.agent_params)
-    if _opt.agent_params.transition_params then
-        _opt.agent_params.transition_params =
-            str_to_table(_opt.agent_params.transition_params)
-    end
-
-    --- first things first
-    local opt = torchSetup(_opt)
-
-    -- load training framework and environment
-    local framework = require(opt.framework)
-    assert(framework)
-
-    local gameEnv = framework.GameEnvironment(opt)
-    local gameActions = gameEnv:getActions()
-
-    -- agent options
-    _opt.agent_params.actions   = gameActions
-    _opt.agent_params.gpu       = _opt.gpu
-    _opt.agent_params.best      = _opt.best
-    if _opt.network ~= '' then
-        _opt.agent_params.network = _opt.network
-    end
-    _opt.agent_params.verbose = _opt.verbose
-    if not _opt.agent_params.state_dim then
-        _opt.agent_params.state_dim = gameEnv:nObsFeature()
-    end
-
-    local agent = dqn[_opt.agent](_opt.agent_params)
-
-    if opt.verbose >= 1 then
-        print('Set up Torch using these options:')
-        for k, v in pairs(opt) do
-            print(k, v)
-        end
-    end
-
-    return gameEnv, gameActions, agent, opt
-end
-
-
 
 --- other functions
 

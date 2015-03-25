@@ -6,7 +6,8 @@ fi
 ENV=$1
 FRAMEWORK="alewrap"
 
-game_path="/Users/will/Dropbox/code/deep-game-engine/roms/"
+# game_path="/Users/will/Dropbox/code/deep-game-engine/roms/"
+game_path='roms/'
 env_params="useRGB=true"
 agent="NeuralQLearner"
 n_replay=1

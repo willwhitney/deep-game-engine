@@ -1,3 +1,5 @@
 *.ipynb
 dataset
 .ipynb_checkpoints
+tmp
+networks
