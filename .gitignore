@@ -3,3 +3,5 @@ dataset
 .ipynb_checkpoints
 tmp
 networks
+slurm_scripts
+slurm_logs

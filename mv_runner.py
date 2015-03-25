@@ -42,7 +42,7 @@ for job in jobs:
         else:
             jobname = jobname + "_" + flag + "_" + str(job[flag])
             flagstring = flagstring + " --" + flag + " " + str(job[flag])
-    flagstring = flagstring + " --save " + jobname
+    flagstring = flagstring + " --name " + jobname
 
     jobcommand = "th atari_reconstruction_main.lua" + flagstring
     with open('slurm_scripts/' + jobname + '.slurm', 'w') as slurmfile:
@@ -60,7 +60,7 @@ for job in jobs:
 
     print (jobcommand)
     if True:
-        os.system("sbatch -N 1 -c 4 --gres=gpu:1 -p gpu --time=6-23:00:00 slurm_scripts/" + jobname + ".slurm &")
+        os.system("sbatch -N 1 -c 2 --gres=gpu:1 -p gpu --time=6-23:00:00 slurm_scripts/" + jobname + ".slurm &")
 
 
 
