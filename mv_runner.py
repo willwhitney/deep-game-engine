@@ -44,13 +44,13 @@ for job in jobs:
             flagstring = flagstring + " --" + flag + " " + str(job[flag])
     flagstring = flagstring + " --save " + jobname
 
-
+    jobcommand = "th atari_reconstruction_main.lua" + flagstring
     with open('slurm_scripts/' + jobname + '.slurm', 'w') as slurmfile:
         slurmfile.write("#!/bin/bash\n")
         slurmfile.write("#SBATCH --job-name"+"=" + jobname + "\n")
         slurmfile.write("#SBATCH --output=slurm_logs/" + jobname + ".out\n")
         slurmfile.write("#SBATCH --error=slurm_logs/" + jobname + ".err\n")
-        slurmfile.write("th monovariant_main.lua" + flagstring)
+        slurmfile.write(jobcommand)
 
     # if not os.path.exists(jobname):
     #     os.makedirs(jobname)
@@ -58,7 +58,7 @@ for job in jobs:
     # with open(jobname + '/generating_parameters.txt', 'w') as paramfile:
     #     paramfile.write(str(job))
 
-    print ("th atari_reconstruction_main.lua" + flagstring)
+    print (jobcommand)
     if True:
         os.system("sbatch -N 1 -c 4 --gres=gpu:1 -p gpu --time=6-23:00:00 slurm_scripts/" + jobname + ".slurm &")
 
