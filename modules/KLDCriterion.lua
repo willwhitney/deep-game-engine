@@ -51,7 +51,7 @@ function KLDCriterion:updateGradInput(input, target)
     self.term:resizeAs(input[2])
     self.term:copy(input[2])
 
-    -- (- sigma^2 + 1) * 0.5
+    -- (- exp(sigma) + 1) * 0.5
     self.gradInput[2] = self.term:exp():mul(-1):add(1):mul(0.5)
 
     return self.gradInput

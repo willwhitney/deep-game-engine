@@ -110,7 +110,7 @@ while step < opt.steps do
         actions[intra_batch_index] = action_index
         intra_batch_index = intra_batch_index + 1
 
-        if intra_batch_index >= batch_size then
+        if intra_batch_index > batch_size then
             if torch.random(test_fraction) == 1 then
                 completed_test_batches = completed_test_batches + 1
                 torch.save(dataset_output_dir .. '/test/images_batch_' .. completed_test_batches, images)

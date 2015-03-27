@@ -18,12 +18,15 @@ base_networks = {
 # Don't give it a save name - that gets generated for you
 jobs = [
         {
-            'import': 'atari_reconstruction',
-            'epoch_size': 10,
-            'num_test_batches': 100
+
         }
 
     ]
+
+if dry_run:
+    print "NOT starting jobs:"
+else:
+    print "Starting jobs:"
 
 for job in jobs:
     jobname = "atari_reconstruction"
@@ -63,12 +66,8 @@ for job in jobs:
     # with open(jobname + '/generating_parameters.txt', 'w') as paramfile:
     #     paramfile.write(str(job))
 
-    if dry_run:
-        print "NOT starting jobs:"
-        print (jobcommand)
-    else:
-        print "Starting jobs:"
-        print (jobcommand)
+    print(jobcommand)
+    if not dry_run:
         os.system("sbatch -N 1 -c 2 --gres=gpu:1 -p gpu --time=6-23:00:00 slurm_scripts/" + jobname + ".slurm &")
 
 

@@ -14,7 +14,7 @@ function test_atari_reconstruction(saveAll)
   local save_dir = paths.concat('tmp', opt.name, 'epoch_' .. epoch)
   os.execute('mkdir -p "' .. save_dir .. '"')
 
-   for test_index = 1, opt.num_test_batches do
+   for test_index = 1, opt.tests_per_epoch do
       collectgarbage()
       -- create mini batch
       local raw_inputs = load_atari_images_batch(MODE_TEST, test_index)
@@ -22,7 +22,7 @@ function test_atari_reconstruction(saveAll)
 
       inputs = raw_inputs:cuda()
       -- disp progress
-      xlua.progress(test_index, opt.num_test_batches)
+      xlua.progress(test_index, opt.tests_per_epoch)
 
       -- test samples
       local preds = model:forward(inputs)
@@ -50,11 +50,11 @@ function test_atari_reconstruction(saveAll)
 
    -- timing
    time = sys.clock() - time
-   time = time / opt.num_test_batches
+   time = time / opt.tests_per_epoch
    print("<trainer> time to test 1 sample = " .. (time * 1000) .. 'ms')
 
    -- print confusion matrix
-   reconstruction = reconstruction / (opt.bsize * opt.num_test_batches * 3 * 150 * 150)
+   reconstruction = reconstruction / (opt.bsize * opt.tests_per_epoch * 3 * 150 * 150)
    print('mean MSE error (test set)', reconstruction)
    testLogger:add{['% mean class accuracy (test set)'] = reconstruction}
    reconstruction = 0
