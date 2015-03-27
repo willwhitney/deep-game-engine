@@ -11,8 +11,8 @@ if not os.path.exists("slurm_scripts"):
 
 
 # networks_dir = '/om/user/wwhitney/facegen_networks/'
-# base_networks = {
-#     }
+base_networks = {
+    }
 
 
 # Don't give it a save name - that gets generated for you
