@@ -43,7 +43,7 @@ cmd:text()
 cmd:text()
 
 cmd:text("Probably don't change these:")
-cmd:option('--threads', 4, 'how many threads to use in torch')
+cmd:option('--threads', 2, 'how many threads to use in torch')
 cmd:option('--num_train_batches', 35000,'number of batches to train with per epoch')
 cmd:option('--num_test_batches', 1000, 'number of batches to test with')
 cmd:option('--epoch_size', 5000, 'number of batches to test with')

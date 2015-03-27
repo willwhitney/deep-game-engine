@@ -1,4 +1,7 @@
 import os
+import sys
+
+dry_run = '--dry-run' in sys.argv
 
 if not os.path.exists("slurm_logs"):
     os.makedirs("slurm_logs")
@@ -15,7 +18,9 @@ if not os.path.exists("slurm_scripts"):
 # Don't give it a save name - that gets generated for you
 jobs = [
         {
-
+            'import': 'atari_reconstruction',
+            'epoch_size': 10,
+            'num_test_batches': 100
         }
 
     ]
@@ -58,8 +63,12 @@ for job in jobs:
     # with open(jobname + '/generating_parameters.txt', 'w') as paramfile:
     #     paramfile.write(str(job))
 
-    print (jobcommand)
-    if True:
+    if dry_run:
+        print "NOT starting jobs:"
+        print (jobcommand)
+    else:
+        print "Starting jobs:"
+        print (jobcommand)
         os.system("sbatch -N 1 -c 2 --gres=gpu:1 -p gpu --time=6-23:00:00 slurm_scripts/" + jobname + ".slurm &")
 
 
