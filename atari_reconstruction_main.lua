@@ -95,10 +95,10 @@ print('Num parameters before loading:', #parameters)
 
 if opt.import ~= '' then
   -- load all the values from the network stored in opt.import
-  lowerboundlist = torch.load(opt.import .. '/lowerbound.t7')
-  lowerbound_test_list = torch.load(opt.import .. '/lowerbound_test.t7')
-  state = torch.load(opt.import .. '/state.t7')
-  p = torch.load(opt.import .. '/parameters.t7')
+  lowerboundlist = torch.load(paths.concat(opt.networks_dir, opt.import, 'lowerbound.t7'))
+  lowerbound_test_list = torch.load(paths.concat(opt.networks_dir, opt.import, 'lowerbound_test.t7'))
+  state = torch.load(paths.concat(opt.networks_dir, opt.import, 'state.t7'))
+  p = torch.load(paths.concat(opt.networks_dir, opt.import, 'parameters.t7'))
   print('Loaded parameter size:', #p)
   parameters:copy(p)
   epoch = lowerboundlist:size(1)
