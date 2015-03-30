@@ -100,7 +100,7 @@ while step < opt.steps do
     -- but make sure the batches stay whole! (sequential)
     local save_flag = true
     if intra_batch_index == 1 then
-        if torch.random(100) ~= 1 then
+        if torch.random(1000) ~= 1 then
             save_flag = false
         end
     end
