@@ -44,4 +44,5 @@ args="-framework $FRAMEWORK -game_path $game_path -name $agent_name -env $ENV -e
 echo $args
 
 
-th train_agent.lua $args
+# th train_agent.lua $args
+th train_agent.lua $args -network networks/DQN3_0_1_breakout_FULL_Y.t7

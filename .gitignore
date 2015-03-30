@@ -5,3 +5,5 @@ tmp
 networks
 slurm_scripts
 slurm_logs
+*.out
+*.err
