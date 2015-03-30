@@ -19,7 +19,7 @@ base_networks = {
 jobs =
     [
         {
-
+            'import': 'angrand'
         }
     ]
 
