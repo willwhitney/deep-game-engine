@@ -115,10 +115,10 @@ function build_atari_prediction_network(dim_hidden, feature_maps, dim_prediction
   encoder:add(nn.Threshold(0,1e-6))
 
   encoder:add(nn.Reshape((feature_maps/4) * (22) * (16) ))
-  encoder:add(nn.PrintModule("after encoder"))
+  -- encoder:add(nn.PrintModule("after encoder"))
 
   predictor = nn.Sequential()
-  predictor:add(nn.PrintModule("before JoinTable"))
+  -- predictor:add(nn.PrintModule("before JoinTable"))
   predictor:add(nn.JoinTable(2))
   predictor:add(nn.Linear((feature_maps/4) * (22) * (16) + 1, dim_prediction))
   predictor:add(nn.ReLU())
@@ -150,7 +150,7 @@ function build_atari_prediction_network(dim_hidden, feature_maps, dim_prediction
   -- decoder:add(nn.PrintModule("after LinearCR"))
 
   decoder:add(nn.Reshape((feature_maps/4), (19), (16) ))
-  decoder:add(nn.PrintModule("after decoder reshape"))
+  -- decoder:add(nn.PrintModule("after decoder reshape"))
 
   decoder:add(nn.SpatialUpSamplingNearest(2))
   decoder:add(cudnn.SpatialConvolution(feature_maps/4,feature_maps/2, 7, 7))
@@ -170,7 +170,7 @@ function build_atari_prediction_network(dim_hidden, feature_maps, dim_prediction
   decoder:add(nn.SpatialUpSamplingNearest(2))
   decoder:add(cudnn.SpatialConvolution(feature_maps,colorchannels, 7, 7))
   decoder:add(cudnn.Sigmoid())
-  decoder:add(nn.PrintModule("after last decoder convolution"))
+  -- decoder:add(nn.PrintModule("after last decoder convolution"))
 
 
   ----------- Put it together -------------------------
@@ -180,7 +180,7 @@ function build_atari_prediction_network(dim_hidden, feature_maps, dim_prediction
   z_in = nn.ParallelTable()
   z_in:add(encoder)
   -- z_in:add(nn.Identity())
-  z_in:add(nn.PrintModule("input 2"))
+  -- z_in:add(nn.PrintModule("input 2"))
   model:add(z_in)
 
   model:add(predictor)
@@ -189,7 +189,6 @@ function build_atari_prediction_network(dim_hidden, feature_maps, dim_prediction
   model:add(decoder)
 
   model:cuda()
-  print(model)
   collectgarbage()
   return model
 end
