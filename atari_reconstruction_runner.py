@@ -16,11 +16,11 @@ base_networks = {
 
 
 # Don't give it a save name - that gets generated for you
-jobs = [
+jobs =
+    [
         {
 
         }
-
     ]
 
 if dry_run:
