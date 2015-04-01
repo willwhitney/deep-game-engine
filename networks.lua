@@ -120,6 +120,7 @@ function build_atari_prediction_network(dim_hidden, feature_maps, dim_prediction
   predictor = nn.Sequential()
   -- predictor:add(nn.PrintModule("before JoinTable"))
   predictor:add(nn.JoinTable(2))
+  -- predictor:add(nn.PrintModule("after JoinTable"))
   predictor:add(nn.Linear((feature_maps/4) * (22) * (16) + 1, dim_prediction))
   predictor:add(nn.ReLU())
   predictor:add(nn.Linear(dim_prediction, dim_prediction))
@@ -179,7 +180,7 @@ function build_atari_prediction_network(dim_hidden, feature_maps, dim_prediction
 
   z_in = nn.ParallelTable()
   z_in:add(encoder)
-  -- z_in:add(nn.Identity())
+  z_in:add(nn.Identity())
   -- z_in:add(nn.PrintModule("input 2"))
   model:add(z_in)
 

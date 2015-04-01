@@ -192,7 +192,7 @@ while true do
     local filename = paths.concat(opt.save, 'vxnet.net')
     os.execute('mkdir -p "' .. sys.dirname(filename) ..'"')
     if paths.filep(filename) then
-      os.execute('mv ' .. filename .. ' ' .. filename .. '.old')
+      os.execute('mv "' .. filename .. '" "' .. filename .. '.old"')
     end
 
     print('<trainer> saving network to '..filename)

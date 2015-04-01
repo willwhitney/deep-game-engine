@@ -41,9 +41,11 @@ function test_atari_reconstruction(saveAll)
 
       if saveAll then
         torch.save(save_dir..'/preds' .. test_index, preds)
+        torch.save(save_dir..'/truth' .. test_index, targets)
       else
         if test_index < 10 then
             torch.save(save_dir..'/preds' .. test_index, preds)
+            torch.save(save_dir..'/truth' .. test_index, targets)
         end
       end
    end
@@ -105,9 +107,11 @@ function test_atari_prediction(saveAll)
 
       if saveAll then
         torch.save(save_dir..'/preds' .. test_index, preds)
+        torch.save(save_dir..'/truth' .. test_index, target:float())
       else
         if test_index < 10 then
-            torch.save(save_dir..'/preds' .. test_index, preds)
+          torch.save(save_dir..'/preds' .. test_index, preds)
+          torch.save(save_dir..'/truth' .. test_index, target:float())
         end
       end
    end

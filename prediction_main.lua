@@ -154,7 +154,7 @@ while true do
       local dKLD_dw = KLD:backward(predictor_output, target)
 
       predictor:backward(z_in.output, dKLD_dw)
-      print(predictor.gradInput[1]:size())
+      -- print(predictor.gradInput[1]:size())
       encoder:backward(input_images, predictor.gradInput[1])
 
       local lowerbound = err  + KLDerr
@@ -192,7 +192,7 @@ while true do
     local filename = paths.concat(opt.save, 'vxnet.net')
     os.execute('mkdir -p "' .. sys.dirname(filename) ..'"')
     if paths.filep(filename) then
-      os.execute('mv ' .. filename .. ' ' .. filename .. '.old')
+      os.execute('mv "' .. filename .. '" "' .. filename .. '.old"')
     end
 
     print('<trainer> saving network to '..filename)

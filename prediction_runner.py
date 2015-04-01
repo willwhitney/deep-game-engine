@@ -18,7 +18,23 @@ base_networks = {
 # Don't give it a save name - that gets generated for you
 jobs = [
         {
-
+            'num_train_batches': 6500,
+            'num_test_batches': 750
+        },
+        {
+            'num_train_batches': 6500,
+            'num_test_batches': 750,
+            'dim_hidden': 100
+        },
+        {
+            'num_train_batches': 6500,
+            'num_test_batches': 750,
+            'dim_prediction': 1024
+        },
+        {
+            'num_train_batches': 6500,
+            'num_test_batches': 750,
+            'dim_prediction': 256
         }
     ]
 
