@@ -91,7 +91,7 @@ for job in jobs:
             flagstring = flagstring + " --" + flag + " " + str(job[flag])
     flagstring = flagstring + " --name " + jobname
 
-    jobcommand = "th atari_reconstruction_main.lua" + flagstring
+    jobcommand = "th reconstruction_main.lua" + flagstring
     with open('slurm_scripts/' + jobname + '.slurm', 'w') as slurmfile:
         slurmfile.write("#!/bin/bash\n")
         slurmfile.write("#SBATCH --job-name"+"=" + jobname + "\n")
