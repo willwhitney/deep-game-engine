@@ -23,43 +23,43 @@ jobs = [
             'num_test_batches': 8000,
             'grayscale': True
         },
-        # {
-        #     'datasetdir': 'dataset-trained',
-        #     'num_train_batches': 70000,
-        #     'num_test_batches': 8000,
-        #     'dim_hidden': 400,
-        #     'grayscale': True
-        # },
-        # {
-        #     'datasetdir': 'dataset-trained',
-        #     'num_train_batches': 70000,
-        #     'num_test_batches': 8000,
-        #     'dim_hidden': 40,
-        #     'grayscale': True
-        # },
-        # {
-        #     'datasetdir': 'dataset-trained',
-        #     'num_train_batches': 70000,
-        #     'num_test_batches': 8000,
-        #     'feature_maps': 144,
-        #     'grayscale': True
-        # },
-        # {
-        #     'datasetdir': 'dataset-trained',
-        #     'num_train_batches': 70000,
-        #     'num_test_batches': 8000,
-        #     'dim_hidden': 400,
-        #     'feature_maps': 128,
-        #     'grayscale': True
-        # },
-        # {
-        #     'datasetdir': 'dataset-trained',
-        #     'num_train_batches': 70000,
-        #     'num_test_batches': 8000,
-        #     'dim_hidden': 40,
-        #     'feature_maps': 48,
-        #     'grayscale': True
-        # }
+        {
+            'datasetdir': 'dataset-trained',
+            'num_train_batches': 70000,
+            'num_test_batches': 8000,
+            'dim_hidden': 400,
+            'grayscale': True
+        },
+        {
+            'datasetdir': 'dataset-trained',
+            'num_train_batches': 70000,
+            'num_test_batches': 8000,
+            'dim_hidden': 40,
+            'grayscale': True
+        },
+        {
+            'datasetdir': 'dataset-trained',
+            'num_train_batches': 70000,
+            'num_test_batches': 8000,
+            'feature_maps': 144,
+            'grayscale': True
+        },
+        {
+            'datasetdir': 'dataset-trained',
+            'num_train_batches': 70000,
+            'num_test_batches': 8000,
+            'dim_hidden': 400,
+            'feature_maps': 128,
+            'grayscale': True
+        },
+        {
+            'datasetdir': 'dataset-trained',
+            'num_train_batches': 70000,
+            'num_test_batches': 8000,
+            'dim_hidden': 40,
+            'feature_maps': 48,
+            'grayscale': True
+        }
     ]
 
 if dry_run:

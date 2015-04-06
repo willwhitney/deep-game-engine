@@ -78,18 +78,18 @@ local episode_reward
 local screen, reward, terminal = game_env:getState()
 
 
-local dataset_output_dir = 'dataset-trained-more'
-os.execute('mkdir -p ' .. dataset_output_dir .. '/test')
-os.execute('mkdir -p ' .. dataset_output_dir .. '/train')
+-- local dataset_output_dir = 'dataset-trained-more'
+-- os.execute('mkdir -p ' .. dataset_output_dir .. '/test')
+-- os.execute('mkdir -p ' .. dataset_output_dir .. '/train')
 
-local batch_size = 30
-local images = torch.Tensor(batch_size, 3, 210, 160)
-local actions = torch.Tensor(batch_size)
-local intra_batch_index = 1
+-- local batch_size = 30
+-- local images = torch.Tensor(batch_size, 3, 210, 160)
+-- local actions = torch.Tensor(batch_size)
+-- local intra_batch_index = 1
 
-local completed_train_batches = 0
-local completed_test_batches = 0
-local test_fraction = 10
+-- local completed_train_batches = 0
+-- local completed_test_batches = 0
+-- local test_fraction = 10
 
 print("Iteration ..", step)
 while step < opt.steps do
@@ -98,12 +98,12 @@ while step < opt.steps do
 
     -- only save every now and then,
     -- but make sure the batches stay whole! (sequential)
-    local save_flag = true
-    if intra_batch_index == 1 then
-        if torch.random(1) ~= 1 then
-            save_flag = false
-        end
-    end
+    local save_flag = false
+    -- if intra_batch_index == 1 then
+    --     if torch.random(1) ~= 1 then
+    --         save_flag = false
+    --     end
+    -- end
 
     if save_flag then
         images[intra_batch_index] = screen:float()
