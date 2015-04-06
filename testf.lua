@@ -17,7 +17,7 @@ function test_atari_reconstruction(saveAll)
    for test_index = 1, opt.tests_per_epoch do
       collectgarbage()
       -- create mini batch
-      local raw_inputs = load_random_atari_images_batch(MODE_TEST, test_index)
+      local raw_inputs = load_random_atari_images_batch(MODE_TEST)
       local targets = raw_inputs
 
       inputs = raw_inputs:cuda()
@@ -81,7 +81,7 @@ function test_atari_prediction(saveAll)
    for test_index = 1, opt.tests_per_epoch do
       collectgarbage()
       -- create mini batch
-      local batch_images, batch_actions = load_random_atari_full_batch(MODE_TRAINING)
+      local batch_images, batch_actions = load_random_atari_full_batch(MODE_TEST)
       batch_images = batch_images:cuda()
       batch_actions = batch_actions:cuda()
 

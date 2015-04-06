@@ -11,7 +11,12 @@ function build_atari_reconstruction_network(dim_hidden, feature_maps)
   input_image_width = 210
   input_image_height = 160
   filter_size = 5
-  colorchannels = 3
+
+  if grayscale then
+    colorchannels = 1
+  else
+    colorchannels = 3
+  end
 
   ----------- Encoder -------------------------
   encoder = nn.Sequential()

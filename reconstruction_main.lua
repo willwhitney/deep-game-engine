@@ -40,7 +40,7 @@ cmd:option('--learning_rate',     -0.0005,        'learning rate for the network
 cmd:option('--momentum_decay',    0.1,            'decay rate for momentum in rmsprop')
 cmd:option('--update_decay',      0.01,           'update decay rate')
 
--- cmd:option('--grayscale',         false,          'do reconstruction in grayscale instead of color')
+cmd:option('--grayscale',         false,          'do reconstruction in grayscale instead of color')
 
 cmd:text()
 cmd:text()
@@ -134,6 +134,7 @@ while true do
     xlua.progress(i, opt.epoch_size)
 
     --Prepare Batch
+    -- if opt.grayscale, this will be grayscale already
     local batch = load_random_atari_images_batch(MODE_TRAINING)
     batch = batch:cuda()
     -- print(batch:size())

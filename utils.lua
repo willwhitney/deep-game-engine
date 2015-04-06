@@ -1,11 +1,20 @@
 
 function load_atari_images_batch(mode, id)
-    return torch.load(paths.concat(opt.datasetdir, mode, 'images_batch_' .. id))
+    local b = torch.load(paths.concat(opt.datasetdir, mode, 'images_batch_' .. id))
+    if opt.grayscale then
+        return grayscale(b)
+    else
+        return b
+    end
+end
+
+function load_atari_actions_batch(mode, id)
+    return torch.load(paths.concat(opt.datasetdir, mode, 'actions_batch_' .. id))
 end
 
 function load_atari_full_batch(mode, id)
-    return  torch.load(paths.concat(opt.datasetdir, mode, 'images_batch_' .. id)),
-            torch.load(paths.concat(opt.datasetdir, mode, 'actions_batch_' .. id))
+    return  load_atari_images_batch(mode, id),
+            load_atari_actions_batch(mode, id)
 end
 
 function load_random_atari_images_batch(mode)
@@ -52,3 +61,31 @@ function getLowerbound(data)
     end
     return lowerbound
 end
+
+function grayscale_image(img)
+    return img[1] * 0.33 + img[2] * 0.33 + img[3] * 0.33
+end
+
+function grayscale(image_batch)
+    local grayscale_batch = torch.Tensor(image_batch:size(1),
+                                         1,
+                                         image_batch:size(3),
+                                         image_batch:size(4))
+    for i = 1, image_batch:size(1) do
+        grayscale_batch[i][1] = grayscale_image(image_batch[i])
+    end
+    return grayscale_batch
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
