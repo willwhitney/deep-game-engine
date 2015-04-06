@@ -1,5 +1,7 @@
 *.ipynb
 dataset
+dataset-trained
+dataset-trained-more
 .ipynb_checkpoints
 tmp
 networks

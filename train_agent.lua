@@ -78,7 +78,7 @@ local episode_reward
 local screen, reward, terminal = game_env:getState()
 
 
-local dataset_output_dir = 'dataset-trained'
+local dataset_output_dir = 'dataset-trained-more'
 os.execute('mkdir -p ' .. dataset_output_dir .. '/test')
 os.execute('mkdir -p ' .. dataset_output_dir .. '/train')
 
