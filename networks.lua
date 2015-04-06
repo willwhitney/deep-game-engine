@@ -48,7 +48,6 @@ function build_atari_reconstruction_network(dim_hidden, feature_maps)
   z:add(sigma)
   encoder:add(z)
 
-
   ----------- Decoder -------------------------
   decoder = nn.Sequential()
   decoder:add(nn.LinearCR(dim_hidden, (feature_maps/4) * (19) * (16) ))

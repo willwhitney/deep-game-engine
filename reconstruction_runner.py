@@ -18,13 +18,47 @@ base_networks = {
 # Don't give it a save name - that gets generated for you
 jobs = [
         {
-            'num_train_batches': 6500,
-            'num_test_batches': 750
+            'datasetdir': 'dataset-trained',
+            'num_train_batches': 70000,
+            'num_test_batches': 8000
         },
         {
-            'num_train_batches': 6500,
-            'num_test_batches': 750,
-            'dim_hidden': 100
+            'datasetdir': 'dataset-trained',
+            'num_train_batches': 70000,
+            'num_test_batches': 8000,
+            'dim_hidden': 400
+        },
+        {
+            'datasetdir': 'dataset-trained',
+            'num_train_batches': 70000,
+            'num_test_batches': 8000,
+            'dim_hidden': 40
+        },
+        {
+            'datasetdir': 'dataset-trained',
+            'num_train_batches': 70000,
+            'num_test_batches': 8000,
+            'feature_maps': 192
+        },
+        {
+            'datasetdir': 'dataset-trained',
+            'num_train_batches': 70000,
+            'num_test_batches': 8000,
+            'dim_hidden': 400,
+            'feature_maps': 128
+        },
+        {
+            'datasetdir': 'dataset-trained',
+            'num_train_batches': 70000,
+            'num_test_batches': 8000,
+            'dim_hidden': 40,
+            'feature_maps': 48
+        },
+        {
+            'datasetdir': 'dataset-trained',
+            'num_train_batches': 70000,
+            'num_test_batches': 8000,
+            'criterion': 'MSE'
         }
     ]
 
@@ -34,7 +68,7 @@ else:
     print "Starting jobs:"
 
 for job in jobs:
-    jobname = "atari_reconstruction"
+    jobname = "reconstruction"
     flagstring = ""
     for flag in job:
         if isinstance(job[flag], bool):
