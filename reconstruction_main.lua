@@ -40,6 +40,8 @@ cmd:option('--learning_rate',     -0.0005,        'learning rate for the network
 cmd:option('--momentum_decay',    0.1,            'decay rate for momentum in rmsprop')
 cmd:option('--update_decay',      0.01,           'update decay rate')
 
+-- cmd:option('--grayscale',         false,          'do reconstruction in grayscale instead of color')
+
 cmd:text()
 cmd:text()
 

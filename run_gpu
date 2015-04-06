@@ -45,4 +45,4 @@ echo $args
 
 
 # th train_agent.lua $args -name $agent_name
-th train_agent.lua $args -network 'networks/DQN3_0_1_breakout_FULL_Y.t7' -name 'networks/DQN3_0_1_breakout_FULL_Y_pretrained.t7'
+th train_agent.lua $args -network 'networks/DQN3_0_1_breakout_FULL_Y.t7' -name 'networks/DQN3_0_1_breakout_FULL_Y_pretrained'
