@@ -35,9 +35,7 @@ function test_atari_reconstruction(saveAll)
       lowerbound = lowerbound + err + KLDerr
 
 
-      preds = preds:float()
-
-      reconstruction = reconstruction + torch.sum(torch.pow(preds-targets,2))
+      reconstruction = reconstruction + torch.sum(torch.pow(preds:float() - targets:float(),2))
 
       if saveAll then
         torch.save(save_dir..'/preds' .. test_index, preds)
