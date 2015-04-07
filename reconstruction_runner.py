@@ -152,7 +152,7 @@ for job in jobs:
 
     print(jobcommand)
     if local and not dry_run:
-        os.system(jobcommand + ' 2> ' + jobname + '.err 1>' + jobname + '.out')
+        os.system(jobcommand + ' 2> ' + jobname + '.err 1>' + jobname + '.out &')
 
     else:
         with open('slurm_scripts/' + jobname + '.slurm', 'w') as slurmfile:
