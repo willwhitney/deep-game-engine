@@ -38,12 +38,12 @@ function test_atari_reconstruction(saveAll)
       reconstruction = reconstruction + torch.sum(torch.pow(preds:float() - targets:float(),2))
 
       if saveAll then
-        torch.save(save_dir..'/preds' .. test_index, preds)
-        torch.save(save_dir..'/truth' .. test_index, targets)
+        torch.save(save_dir..'/preds' .. test_index, preds:float())
+        torch.save(save_dir..'/truth' .. test_index, targets:float())
       else
         if test_index < 10 then
-            torch.save(save_dir..'/preds' .. test_index, preds)
-            torch.save(save_dir..'/truth' .. test_index, targets)
+            torch.save(save_dir..'/preds' .. test_index, preds:float())
+            torch.save(save_dir..'/truth' .. test_index, targets:float())
         end
       end
    end
