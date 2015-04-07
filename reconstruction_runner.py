@@ -17,49 +17,98 @@ base_networks = {
 
 # Don't give it a save name - that gets generated for you
 jobs = [
-        # {
-        #     'datasetdir': 'dataset-trained',
-        #     'num_train_batches': 70000,
-        #     'num_test_batches': 8000,
-        #     'learning_rate': '-.00005'
-        # },
-        # {
-        #     'datasetdir': 'dataset-trained',
-        #     'num_train_batches': 70000,
-        #     'num_test_batches': 8000,
-        #     'learning_rate': '-.00001'
-        # },
-        # {
-        #     'datasetdir': 'dataset-trained',
-        #     'num_train_batches': 70000,
-        #     'num_test_batches': 8000,
-        #     'learning_rate': '-.00005',
-        #     'momentum_decay': 0.05
-        # },
-        # {
-        #     'datasetdir': 'dataset-trained',
-        #     'num_train_batches': 70000,
-        #     'num_test_batches': 8000,
-        #     'learning_rate': '-.00001',
-        #     'momentum_decay': 0.05
-        # }
         {
             'datasetdir': 'dataset-trained',
             'num_train_batches': 70000,
             'num_test_batches': 8000,
-            'epoch_size': 10,
-            'tests_per_epoch': 5,
-            'learning_rate': '-.00005'
+            'grayscale': True
         },
         {
             'datasetdir': 'dataset-trained',
             'num_train_batches': 70000,
             'num_test_batches': 8000,
-            'epoch_size': 10,
-            'tests_per_epoch': 5,
+            'learning_rate': '-0.00005',
+            'grayscale': True
+        },
+        {
+            'datasetdir': 'dataset-trained',
+            'num_train_batches': 70000,
+            'num_test_batches': 8000,
             'grayscale': True,
-            'learning_rate': '-.00005'
+            'learning_rate': '-0.00001'
+        },
+
+        {
+            'datasetdir': 'dataset-trained',
+            'num_train_batches': 70000,
+            'num_test_batches': 8000,
+            'dim_hidden': 400,
+            'feature_maps': 128,
+            'learning_rate': '-0.00005'
+        },
+        {
+            'datasetdir': 'dataset-trained',
+            'num_train_batches': 70000,
+            'num_test_batches': 8000,
+            'dim_hidden': 400,
+            'feature_maps': 128,
+            'learning_rate': '-0.00001'
+        },
+
+        {
+            'datasetdir': 'dataset-trained',
+            'num_train_batches': 70000,
+            'num_test_batches': 8000,
+            'dim_hidden': 40,
+            'feature_maps': 48,
+            'learning_rate': '-0.00005'
+        },
+        {
+            'datasetdir': 'dataset-trained',
+            'num_train_batches': 70000,
+            'num_test_batches': 8000,
+            'dim_hidden': 40,
+            'feature_maps': 48,
+            'learning_rate': '-0.00001'
         }
+
+
+        # {
+        #     'datasetdir': 'dataset-trained',
+        #     'num_train_batches': 70000,
+        #     'num_test_batches': 8000,
+        #     'dim_hidden': 400
+        # },
+        # {
+        #     'datasetdir': 'dataset-trained',
+        #     'num_train_batches': 70000,
+        #     'num_test_batches': 8000,
+        #     'dim_hidden': 40,
+        #     'grayscale': True
+        # },
+        # {
+        #     'datasetdir': 'dataset-trained',
+        #     'num_train_batches': 70000,
+        #     'num_test_batches': 8000,
+        #     'feature_maps': 144,
+        #     'grayscale': True
+        # },
+        # {
+        #     'datasetdir': 'dataset-trained',
+        #     'num_train_batches': 70000,
+        #     'num_test_batches': 8000,
+        #     'dim_hidden': 400,
+        #     'feature_maps': 128,
+        #     'grayscale': True
+        # },
+        # {
+        #     'datasetdir': 'dataset-trained',
+        #     'num_train_batches': 70000,
+        #     'num_test_batches': 8000,
+        #     'dim_hidden': 40,
+        #     'feature_maps': 48,
+        #     'grayscale': True
+        # }
     ]
 
 if dry_run:
