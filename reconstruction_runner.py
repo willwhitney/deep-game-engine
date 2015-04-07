@@ -17,31 +17,48 @@ base_networks = {
 
 # Don't give it a save name - that gets generated for you
 jobs = [
+        # {
+        #     'datasetdir': 'dataset-trained',
+        #     'num_train_batches': 70000,
+        #     'num_test_batches': 8000,
+        #     'learning_rate': '-.00005'
+        # },
+        # {
+        #     'datasetdir': 'dataset-trained',
+        #     'num_train_batches': 70000,
+        #     'num_test_batches': 8000,
+        #     'learning_rate': '-.00001'
+        # },
+        # {
+        #     'datasetdir': 'dataset-trained',
+        #     'num_train_batches': 70000,
+        #     'num_test_batches': 8000,
+        #     'learning_rate': '-.00005',
+        #     'momentum_decay': 0.05
+        # },
+        # {
+        #     'datasetdir': 'dataset-trained',
+        #     'num_train_batches': 70000,
+        #     'num_test_batches': 8000,
+        #     'learning_rate': '-.00001',
+        #     'momentum_decay': 0.05
+        # }
         {
             'datasetdir': 'dataset-trained',
             'num_train_batches': 70000,
             'num_test_batches': 8000,
+            'epoch_size': 10,
+            'tests_per_epoch': 5,
             'learning_rate': '-.00005'
         },
         {
             'datasetdir': 'dataset-trained',
             'num_train_batches': 70000,
             'num_test_batches': 8000,
-            'learning_rate': '-.00001'
-        },
-        {
-            'datasetdir': 'dataset-trained',
-            'num_train_batches': 70000,
-            'num_test_batches': 8000,
-            'learning_rate': '-.00005',
-            'momentum_decay': 0.05
-        },
-        {
-            'datasetdir': 'dataset-trained',
-            'num_train_batches': 70000,
-            'num_test_batches': 8000,
-            'learning_rate': '-.00001',
-            'momentum_decay': 0.05
+            'epoch_size': 10,
+            'tests_per_epoch': 5,
+            'grayscale': True,
+            'learning_rate': '-.00005'
         }
     ]
 
