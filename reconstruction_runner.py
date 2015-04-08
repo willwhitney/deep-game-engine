@@ -21,17 +21,17 @@ jobs = [
 
         # A couple of quick tests
         # {
-        #     'datasetdir': 'dataset-trained-more',
-        #     'num_train_batches': 24000,
-        #     'num_test_batches': 2800,
+        #     'datasetdir': 'dataset-copied',
+        #     'num_train_batches': 10000,
+        #     'num_test_batches': 1000,
         #     'epoch_size': 5,
         #     'tests_per_epoch': 5,
         #     'learning_rate': '-0.00001'
         # },
         # {
-        #     'datasetdir': 'dataset-trained-more',
-        #     'num_train_batches': 24000,
-        #     'num_test_batches': 2800,
+        #     'datasetdir': 'dataset-copied',
+        #     'num_train_batches': 10000,
+        #     'num_test_batches': 1000,
         #     'grayscale': True,
         #     'epoch_size': 5,
         #     'tests_per_epoch': 5,
@@ -40,70 +40,70 @@ jobs = [
 
 
         # the real jobs
-        # {
-        #     'datasetdir': 'dataset-trained-more',
-        #     'num_train_batches': 24000,
-        #     'num_test_batches': 2800,
-        #     'learning_rate': '-0.0001'
-        # },
         {
-            'datasetdir': 'dataset-trained-more',
-            'num_train_batches': 24000,
-            'num_test_batches': 2800,
+            'datasetdir': 'dataset-copied',
+            'num_train_batches': 10000,
+            'num_test_batches': 1000,
+            'learning_rate': '-0.0001'
+        },
+        {
+            'datasetdir': 'dataset-copied',
+            'num_train_batches': 10000,
+            'num_test_batches': 1000,
             'learning_rate': '-0.00005',
         },
         {
-            'datasetdir': 'dataset-trained-more',
-            'num_train_batches': 24000,
-            'num_test_batches': 2800,
+            'datasetdir': 'dataset-copied',
+            'num_train_batches': 10000,
+            'num_test_batches': 1000,
             'learning_rate': '-0.00001'
         },
 
         {
-            'datasetdir': 'dataset-trained-more',
-            'num_train_batches': 24000,
-            'num_test_batches': 2800,
+            'datasetdir': 'dataset-copied',
+            'num_train_batches': 10000,
+            'num_test_batches': 1000,
             'dim_hidden': 400,
             'feature_maps': 128,
             'learning_rate': '-0.0001'
         },
         {
-            'datasetdir': 'dataset-trained-more',
-            'num_train_batches': 24000,
-            'num_test_batches': 2800,
+            'datasetdir': 'dataset-copied',
+            'num_train_batches': 10000,
+            'num_test_batches': 1000,
             'dim_hidden': 400,
             'feature_maps': 128,
             'learning_rate': '-0.00001'
         },
 
         {
-            'datasetdir': 'dataset-trained-more',
-            'num_train_batches': 24000,
-            'num_test_batches': 2800,
+            'datasetdir': 'dataset-copied',
+            'num_train_batches': 10000,
+            'num_test_batches': 1000,
             'dim_hidden': 40,
             'feature_maps': 48,
             'learning_rate': '-0.0001'
         },
         {
-            'datasetdir': 'dataset-trained-more',
-            'num_train_batches': 24000,
-            'num_test_batches': 2800,
+            'datasetdir': 'dataset-copied',
+            'num_train_batches': 10000,
+            'num_test_batches': 1000,
             'dim_hidden': 40,
             'feature_maps': 48,
             'learning_rate': '-0.00001'
         },
 
         {
-            'datasetdir': 'dataset-trained-more',
-            'num_train_batches': 24000,
-            'num_test_batches': 2800,
+            'datasetdir': 'dataset-copied',
+            'num_train_batches': 10000,
+            'num_test_batches': 1000,
             'grayscale': True,
             'learning_rate': '-0.0001'
         },
         {
-            'datasetdir': 'dataset-trained-more',
-            'num_train_batches': 24000,
-            'num_test_batches': 2800,
+            'datasetdir': 'dataset-copied',
+            'num_train_batches': 10000,
+            'num_test_batches': 1000,
             'grayscale': True,
             'learning_rate': '-0.00001'
         },
