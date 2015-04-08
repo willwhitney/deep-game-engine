@@ -46,67 +46,18 @@ jobs = [
         #     'num_test_batches': 2800,
         #     'learning_rate': '-0.0001'
         # },
-        # {
-        #     'datasetdir': 'dataset-trained-more',
-        #     'num_train_batches': 24000,
-        #     'num_test_batches': 2800,
-        #     'learning_rate': '-0.00005',
-        # },
-        # {
-        #     'datasetdir': 'dataset-trained-more',
-        #     'num_train_batches': 24000,
-        #     'num_test_batches': 2800,
-        #     'learning_rate': '-0.00001'
-        # },
-
-        # {
-        #     'datasetdir': 'dataset-trained-more',
-        #     'num_train_batches': 24000,
-        #     'num_test_batches': 2800,
-        #     'dim_hidden': 400,
-        #     'feature_maps': 128,
-        #     'learning_rate': '-0.0001'
-        # },
-        # {
-        #     'datasetdir': 'dataset-trained-more',
-        #     'num_train_batches': 24000,
-        #     'num_test_batches': 2800,
-        #     'dim_hidden': 400,
-        #     'feature_maps': 128,
-        #     'learning_rate': '-0.00001'
-        # },
-
-        # {
-        #     'datasetdir': 'dataset-trained-more',
-        #     'num_train_batches': 24000,
-        #     'num_test_batches': 2800,
-        #     'dim_hidden': 40,
-        #     'feature_maps': 48,
-        #     'learning_rate': '-0.0001'
-        # },
-        # {
-        #     'datasetdir': 'dataset-trained-more',
-        #     'num_train_batches': 24000,
-        #     'num_test_batches': 2800,
-        #     'dim_hidden': 40,
-        #     'feature_maps': 48,
-        #     'learning_rate': '-0.00001'
-        # },
-
-        # {
-        #     'datasetdir': 'dataset-trained-more',
-        #     'num_train_batches': 24000,
-        #     'num_test_batches': 2800,
-        #     'grayscale': True,
-        #     'learning_rate': '-0.0001'
-        # },
-        # {
-        #     'datasetdir': 'dataset-trained-more',
-        #     'num_train_batches': 24000,
-        #     'num_test_batches': 2800,
-        #     'grayscale': True,
-        #     'learning_rate': '-0.00001'
-        # },
+        {
+            'datasetdir': 'dataset-trained-more',
+            'num_train_batches': 24000,
+            'num_test_batches': 2800,
+            'learning_rate': '-0.00005',
+        },
+        {
+            'datasetdir': 'dataset-trained-more',
+            'num_train_batches': 24000,
+            'num_test_batches': 2800,
+            'learning_rate': '-0.00001'
+        },
 
         {
             'datasetdir': 'dataset-trained-more',
@@ -114,8 +65,47 @@ jobs = [
             'num_test_batches': 2800,
             'dim_hidden': 400,
             'feature_maps': 128,
+            'learning_rate': '-0.0001'
+        },
+        {
+            'datasetdir': 'dataset-trained-more',
+            'num_train_batches': 24000,
+            'num_test_batches': 2800,
+            'dim_hidden': 400,
+            'feature_maps': 128,
+            'learning_rate': '-0.00001'
+        },
+
+        {
+            'datasetdir': 'dataset-trained-more',
+            'num_train_batches': 24000,
+            'num_test_batches': 2800,
+            'dim_hidden': 40,
+            'feature_maps': 48,
+            'learning_rate': '-0.0001'
+        },
+        {
+            'datasetdir': 'dataset-trained-more',
+            'num_train_batches': 24000,
+            'num_test_batches': 2800,
+            'dim_hidden': 40,
+            'feature_maps': 48,
+            'learning_rate': '-0.00001'
+        },
+
+        {
+            'datasetdir': 'dataset-trained-more',
+            'num_train_batches': 24000,
+            'num_test_batches': 2800,
             'grayscale': True,
             'learning_rate': '-0.0001'
+        },
+        {
+            'datasetdir': 'dataset-trained-more',
+            'num_train_batches': 24000,
+            'num_test_batches': 2800,
+            'grayscale': True,
+            'learning_rate': '-0.00001'
         },
     ]
 
@@ -152,7 +142,7 @@ for job in jobs:
 
     print(jobcommand)
     if local and not dry_run:
-        os.system(jobcommand + ' 2> ' + jobname + '.err 1>' + jobname + '.out &')
+        os.system(jobcommand + ' 2> slurm_logs/' + jobname + '.err 1> slurm_logs/' + jobname + '.out &')
 
     else:
         with open('slurm_scripts/' + jobname + '.slurm', 'w') as slurmfile:
