@@ -25,11 +25,11 @@ cmd:option('-random_starts', 0, 'play action 0 between 1 and random_starts ' ..
            'number of times at the start of each training episode')
 
 cmd:option('-name', '', 'filename used for saving network and training history')
-cmd:option('-network', '', 'reload pretrained network')
+cmd:option('-network', 'convnet_atari3', 'reload pretrained network')
 cmd:option('-agent', '', 'name of agent file to use')
 cmd:option('-agent_params', '', 'string of agent parameters')
 cmd:option('-seed', 1, 'fixed input seed for repeatable experiments')
-cmd:option('-saveNetworkParams', false,
+cmd:option('-saveNetworkParams', true,
            'saves the agent network in a separate file')
 cmd:option('-prog_freq', 5*10^3, 'frequency of progress output')
 cmd:option('-save_freq', 5*10^4, 'the model is saved every save_freq steps')
@@ -48,8 +48,15 @@ cmd:text()
 
 local opt = cmd:parse(arg)
 
+local network_imported = (opt.network:sub(opt.network:len() - 2) == '.t7')
+
 --- General setup.
 local game_env, game_actions, agent, opt = setup(opt)
+
+if network_imported then
+    local loaded_w = torch.load(opt.network:sub(1, opt.network:len() - 3) .. '.params.t7', 'ascii').network
+    agent.w = loaded_w
+end
 
 -- override print to always flush the output
 local old_print = print
@@ -78,18 +85,18 @@ local episode_reward
 local screen, reward, terminal = game_env:getState()
 
 
--- local dataset_output_dir = 'dataset-trained-more'
--- os.execute('mkdir -p ' .. dataset_output_dir .. '/test')
--- os.execute('mkdir -p ' .. dataset_output_dir .. '/train')
+local dataset_output_dir = 'dataset-saving-params'
+os.execute('mkdir -p ' .. dataset_output_dir .. '/test')
+os.execute('mkdir -p ' .. dataset_output_dir .. '/train')
 
--- local batch_size = 30
--- local images = torch.Tensor(batch_size, 3, 210, 160)
--- local actions = torch.Tensor(batch_size)
--- local intra_batch_index = 1
+local batch_size = 30
+local images = torch.Tensor(batch_size, 3, 210, 160)
+local actions = torch.Tensor(batch_size)
+local intra_batch_index = 1
 
--- local completed_train_batches = 0
--- local completed_test_batches = 0
--- local test_fraction = 10
+local completed_train_batches = 0
+local completed_test_batches = 0
+local test_fraction = 10
 
 print("Iteration ..", step)
 while step < opt.steps do
@@ -98,12 +105,12 @@ while step < opt.steps do
 
     -- only save every now and then,
     -- but make sure the batches stay whole! (sequential)
-    local save_flag = false
-    -- if intra_batch_index == 1 then
-    --     if torch.random(1) ~= 1 then
-    --         save_flag = false
-    --     end
-    -- end
+    local save_flag = true
+    if intra_batch_index == 1 then
+        if torch.random(1000) ~= 1 then
+            save_flag = false
+        end
+    end
 
     if save_flag then
         images[intra_batch_index] = screen:float()
@@ -248,6 +255,7 @@ while step < opt.steps do
         if opt.saveNetworkParams then
             local nets = {network=w:clone():float()}
             torch.save(filename..'.params.t7', nets, 'ascii')
+            print('Saved:', filename .. '.params.t7')
         end
         agent.valid_s, agent.valid_a, agent.valid_r, agent.valid_s2,
             agent.valid_term = s, a, r, s2, term
