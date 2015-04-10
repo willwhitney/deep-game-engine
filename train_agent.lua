@@ -85,7 +85,7 @@ local episode_reward
 local screen, reward, terminal = game_env:getState()
 
 
-local dataset_output_dir = 'dataset-saving-params'
+local dataset_output_dir = 'dataset-dummy'
 os.execute('mkdir -p ' .. dataset_output_dir .. '/test')
 os.execute('mkdir -p ' .. dataset_output_dir .. '/train')
 
@@ -105,7 +105,7 @@ while step < opt.steps do
 
     -- only save every now and then,
     -- but make sure the batches stay whole! (sequential)
-    local save_flag = true
+    local save_flag = false
     if intra_batch_index == 1 then
         if torch.random(1000) ~= 1 then
             save_flag = false

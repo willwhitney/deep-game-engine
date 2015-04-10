@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#SBATCH --job-name=dataset_generator_saving_params
-#SBATCH --output=dataset_generator_saving_params.out
-#SBATCH --error=dataset_generator_saving_params.err
+#SBATCH --job-name=DQN_freeway_saving_params
+#SBATCH --output=slurm_logs/DQN_freeway_saving_params.out
+#SBATCH --error=slurm_logs/DQN_freeway_saving_params.err
 
-./run_gpu breakout
+./run_gpu freeway
