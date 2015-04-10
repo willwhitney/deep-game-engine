@@ -40,32 +40,61 @@ jobs = [
 
 
         # the real jobs
+        # {
+        #     'datasetdir': 'dataset-copied',
+        #     'num_train_batches': 10000,
+        #     'num_test_batches': 1000,
+        #     'learning_rate': '-0.0001'
+        # },
+        # {
+        #     'datasetdir': 'dataset-copied',
+        #     'num_train_batches': 10000,
+        #     'num_test_batches': 1000,
+        #     'learning_rate': '-0.00005',
+        # },
+        # {
+        #     'datasetdir': 'dataset-copied',
+        #     'num_train_batches': 10000,
+        #     'num_test_batches': 1000,
+        #     'learning_rate': '-0.00001'
+        # },
         {
             'datasetdir': 'dataset-copied',
             'num_train_batches': 10000,
             'num_test_batches': 1000,
-            'learning_rate': '-0.0001'
+            'learning_rate': '-0.000005'
         },
         {
             'datasetdir': 'dataset-copied',
             'num_train_batches': 10000,
             'num_test_batches': 1000,
-            'learning_rate': '-0.00005',
-        },
-        {
-            'datasetdir': 'dataset-copied',
-            'num_train_batches': 10000,
-            'num_test_batches': 1000,
-            'learning_rate': '-0.00001'
+            'learning_rate': '-0.000001'
         },
 
+
+        # {
+        #     'datasetdir': 'dataset-copied',
+        #     'num_train_batches': 10000,
+        #     'num_test_batches': 1000,
+        #     'dim_hidden': 400,
+        #     'feature_maps': 128,
+        #     'learning_rate': '-0.0001'
+        # },
+        # {
+        #     'datasetdir': 'dataset-copied',
+        #     'num_train_batches': 10000,
+        #     'num_test_batches': 1000,
+        #     'dim_hidden': 400,
+        #     'feature_maps': 128,
+        #     'learning_rate': '-0.00001'
+        # },
         {
             'datasetdir': 'dataset-copied',
             'num_train_batches': 10000,
             'num_test_batches': 1000,
             'dim_hidden': 400,
             'feature_maps': 128,
-            'learning_rate': '-0.0001'
+            'learning_rate': '-0.000005'
         },
         {
             'datasetdir': 'dataset-copied',
@@ -73,16 +102,32 @@ jobs = [
             'num_test_batches': 1000,
             'dim_hidden': 400,
             'feature_maps': 128,
-            'learning_rate': '-0.00001'
+            'learning_rate': '-0.000001'
         },
 
+        # {
+        #     'datasetdir': 'dataset-copied',
+        #     'num_train_batches': 10000,
+        #     'num_test_batches': 1000,
+        #     'dim_hidden': 40,
+        #     'feature_maps': 48,
+        #     'learning_rate': '-0.0001'
+        # },
+        # {
+        #     'datasetdir': 'dataset-copied',
+        #     'num_train_batches': 10000,
+        #     'num_test_batches': 1000,
+        #     'dim_hidden': 40,
+        #     'feature_maps': 48,
+        #     'learning_rate': '-0.00001'
+        # },
         {
             'datasetdir': 'dataset-copied',
             'num_train_batches': 10000,
             'num_test_batches': 1000,
             'dim_hidden': 40,
             'feature_maps': 48,
-            'learning_rate': '-0.0001'
+            'learning_rate': '-0.000005'
         },
         {
             'datasetdir': 'dataset-copied',
@@ -90,23 +135,23 @@ jobs = [
             'num_test_batches': 1000,
             'dim_hidden': 40,
             'feature_maps': 48,
-            'learning_rate': '-0.00001'
+            'learning_rate': '-0.000001'
         },
 
-        {
-            'datasetdir': 'dataset-copied',
-            'num_train_batches': 10000,
-            'num_test_batches': 1000,
-            'grayscale': True,
-            'learning_rate': '-0.0001'
-        },
-        {
-            'datasetdir': 'dataset-copied',
-            'num_train_batches': 10000,
-            'num_test_batches': 1000,
-            'grayscale': True,
-            'learning_rate': '-0.00001'
-        },
+        # {
+        #     'datasetdir': 'dataset-copied',
+        #     'num_train_batches': 10000,
+        #     'num_test_batches': 1000,
+        #     'grayscale': True,
+        #     'learning_rate': '-0.0001'
+        # },
+        # {
+        #     'datasetdir': 'dataset-copied',
+        #     'num_train_batches': 10000,
+        #     'num_test_batches': 1000,
+        #     'grayscale': True,
+        #     'learning_rate': '-0.00001'
+        # },
     ]
 
 if dry_run:
