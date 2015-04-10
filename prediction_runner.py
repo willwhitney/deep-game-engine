@@ -2,6 +2,7 @@ import os
 import sys
 
 dry_run = '--dry-run' in sys.argv
+local   = '--local' in sys.argv
 
 if not os.path.exists("slurm_logs"):
     os.makedirs("slurm_logs")
@@ -17,25 +18,69 @@ base_networks = {
 
 # Don't give it a save name - that gets generated for you
 jobs = [
+        # A couple of quick tests
+        # {
+        #     'datasetdir': 'dataset-temp',
+        #     'num_train_batches': 100,
+        #     'num_test_batches': 10,
+        #     'feature_maps': 24,
+        #     'dim_hidden': 40,
+        #     'dim_prediction': 40,
+        #     'learning_rate': '-0.0001',
+        #     'epoch_size': 5,
+        #     'tests_per_epoch': 5,
+        # },
+
+        # the real jobs
         {
-            'num_train_batches': 6500,
-            'num_test_batches': 750
+            'datasetdir': 'dataset-copied',
+            'num_train_batches': 10000,
+            'num_test_batches': 1000,
+            'learning_rate': '-0.0001'
         },
         {
-            'num_train_batches': 6500,
-            'num_test_batches': 750,
-            'dim_hidden': 100
+            'datasetdir': 'dataset-copied',
+            'num_train_batches': 10000,
+            'num_test_batches': 1000,
+            'learning_rate': '-0.00005',
         },
         {
-            'num_train_batches': 6500,
-            'num_test_batches': 750,
-            'dim_prediction': 1024
+            'datasetdir': 'dataset-copied',
+            'num_train_batches': 10000,
+            'num_test_batches': 1000,
+            'learning_rate': '-0.00001'
+        },
+
+        {
+            'datasetdir': 'dataset-copied',
+            'num_train_batches': 10000,
+            'num_test_batches': 1000,
+            'dim_prediction': 128,
+            'learning_rate': '-0.0001'
         },
         {
-            'num_train_batches': 6500,
-            'num_test_batches': 750,
-            'dim_prediction': 256
-        }
+            'datasetdir': 'dataset-copied',
+            'num_train_batches': 10000,
+            'num_test_batches': 1000,
+            'dim_prediction': 128,
+            'learning_rate': '-0.00001'
+        },
+
+        {
+            'datasetdir': 'dataset-copied',
+            'num_train_batches': 10000,
+            'num_test_batches': 1000,
+            'dim_prediction': 1024,
+            'learning_rate': '-0.0001'
+        },
+        {
+            'datasetdir': 'dataset-copied',
+            'num_train_batches': 10000,
+            'num_test_batches': 1000,
+            'dim_prediction': 1024,
+            'learning_rate': '-0.00001'
+        },
+
     ]
 
 if dry_run:
@@ -82,8 +127,23 @@ for job in jobs:
     #     paramfile.write(str(job))
 
     print(jobcommand)
-    if not dry_run:
-        os.system("sbatch -N 1 -c 2 --gres=gpu:1 -p gpu --time=6-23:00:00 slurm_scripts/" + jobname + ".slurm &")
+    if local and not dry_run:
+        os.system(jobcommand + ' 2> slurm_logs/' + jobname + '.err 1> slurm_logs/' + jobname + '.out &')
+
+    else:
+        with open('slurm_scripts/' + jobname + '.slurm', 'w') as slurmfile:
+            slurmfile.write("#!/bin/bash\n")
+            slurmfile.write("#SBATCH --job-name"+"=" + jobname + "\n")
+            slurmfile.write("#SBATCH --output=slurm_logs/" + jobname + ".out\n")
+            slurmfile.write("#SBATCH --error=slurm_logs/" + jobname + ".err\n")
+            slurmfile.write(jobcommand)
+
+        if not dry_run:
+            os.system("sbatch -N 1 -c 1 --gres=gpu:1 -p gpu --time=6-23:00:00 slurm_scripts/" + jobname + ".slurm &")
+
+
+
+
 
 
 
