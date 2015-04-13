@@ -28,13 +28,13 @@ cmd:text('Options')
 
 cmd:text('Change these options:')
 cmd:option('--import',            '',             'the containing folder of the network to load in. does nothing with `no_load`')
+cmd:option('--coder',             '',             'the containing folder of the autoencoder network to use as en/de-coder')
 cmd:option('--networks_dir',      'networks',     'the directory to save the resulting networks in')
 cmd:option('--name',              'default',      'the name for this network. used for saving the network and results')
 cmd:option('--datasetdir',        'dataset',      'dataset source directory')
 
 cmd:option('--dim_hidden',        200,            'dimension of the representation layer')
-cmd:option('--dim_prediction',    512,            'dimension of the prediction layer')
-cmd:option('--feature_maps',      96,             'number of feature maps')
+cmd:option('--dim_prediction',    256,            'dimension of the prediction layer')
 
 cmd:option('--learning_rate',     -0.0005,        'learning rate for the network')
 cmd:option('--momentum_decay',    0.1,            'decay rate for momentum in rmsprop')
@@ -45,8 +45,8 @@ cmd:text()
 
 cmd:text("Probably don't change these:")
 cmd:option('--threads', 1, 'how many threads to use in torch')
-cmd:option('--num_train_batches', 24999,'number of batches to train with per epoch')
-cmd:option('--num_test_batches', 3999, 'number of batches to test with')
+cmd:option('--num_train_batches', 10000,'number of batches to train with per epoch')
+cmd:option('--num_test_batches', 1000, 'number of batches to test with')
 cmd:option('--epoch_size', 5000, 'number of batches to test with')
 cmd:option('--tests_per_epoch', 200, 'number of test batches to run every epoch')
 cmd:option('--bsize', 30, 'number of samples per batch_images')
@@ -72,7 +72,7 @@ MODE_TRAINING = "train"
 MODE_TEST = "test"
 
 
-model = build_atari_prediction_network(opt.dim_hidden, opt.feature_maps, opt.dim_prediction)
+predictor = build_z_prediction_network(opt.dim_hidden, opt.dim_prediction)
 
 
 criterion = nn.BCECriterion()
@@ -83,11 +83,20 @@ KLD.sizeAverage = false
 
 criterion:cuda()
 KLD:cuda()
-model:cuda()
+predictor:cuda()
 cutorch.synchronize()
 
-parameters, gradients = model:getParameters()
+parameters, gradients = predictor:getParameters()
 print('Num parameters before loading:', #parameters)
+
+coder = torch.load(paths.concat(opt.networks_dir, opt.coder, 'vxnet.net'))
+encoder = coder.modules[1]
+decoder = coder.modules[3]
+
+-- coder_params = torch.load(paths.concat(opt.networks_dir, opt.coder, 'parameters.t7'))
+-- print('Loaded parameter size:', #p)
+-- parameters:copy(p)
+
 
 if opt.import ~= '' then
   -- load all the values from the network stored in opt.import
@@ -119,9 +128,13 @@ while true do
     batch_actions = batch_actions:cuda()
 
     local input_images = batch_images[{{1, batch_images:size(1) - 1}}]
+    local target_images = batch_images[{{2, batch_images:size(1)}}]
+
     local input_actions = batch_actions[{{1, batch_images:size(1) - 1}}]
     input_actions:resize(batch_images:size(1) - 1, 1)
-    local target = batch_images[{{2, batch_images:size(1)}}]
+
+    local input_zs = encoder:forward(input_images)  -- z_t
+    local target = encoder:forward(target_images)   -- z_t+1
 
     --Optimization function
     local opfunc = function(x)
@@ -131,8 +144,8 @@ while true do
         parameters:copy(x)
       end
 
-      model:zeroGradParameters()
-      local f = model:forward({input_images, input_actions})
+      predictor:zeroGradParameters()
+      local f = predictor:forward({input_zs, input_actions})
       -- print(f:size())
 
       -- local target = target or batch_images.new()
@@ -141,7 +154,7 @@ while true do
       local err = - criterion:forward(f, target)
       local df_dw = criterion:backward(f, target):mul(-1)
 
-      model:backward(batch_images,df_dw)
+      predictor:backward(batch_images,df_dw)
       local predictor_output = predictor.output
 
       local KLDerr = KLD:forward(predictor_output, target)
@@ -190,7 +203,7 @@ while true do
     end
 
     print('<trainer> saving network to '..filename)
-    torch.save(filename, model)
+    torch.save(filename, predictor)
   end
 
 

@@ -199,6 +199,50 @@ function build_atari_prediction_network(dim_hidden, feature_maps, dim_prediction
 end
 
 
+function build_z_prediction_network(dim_hidden, dim_prediction)
+
+  predictor = nn.Sequential()
+  -- mu-sigma-control to prediction coding
+  predictor:add(nn.Linear(dim_hidden * 2 + 1, dim_prediction))
+  predictor:add(nn.ReLU())
+  predictor:add(nn.Linear(dim_prediction, dim_prediction))
+  predictor:add(nn.ReLU())
+  predictor:add(nn.Linear(dim_prediction, dim_prediction))
+  predictor:add(nn.ReLU())
+
+  local z = nn.ConcatTable()
+
+  local mu = nn.Sequential()
+    mu:add(nn.LinearCR(dim_prediction, dim_hidden))
+  z:add(mu)
+
+  local sigma = nn.Sequential()
+    sigma:add(nn.LinearCR(dim_prediction, dim_hidden))
+  z:add(sigma)
+  predictor:add(z)
+
+  ----------- Put it together -------------------------
+  model = nn.Sequential()
+
+  inputs = nn.Sequential()
+
+  local par = nn.ParallelTable()
+  par:add(nn.JoinTable(2)) -- stick mu and sigma togeter
+  par:add(nn.Identity())   -- pass through the controller signal
+
+  inputs:add(par)
+  inputs:add(nn.JoinTable(2)) -- join together musigma and controller
+
+  model:add(inputs)
+  model:add(predictor)
+  model:add(nn.Reparametrize(dim_hidden))
+
+  model:cuda()
+  collectgarbage()
+  return model
+end
+
+
 
 
 
