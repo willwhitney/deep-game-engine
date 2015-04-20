@@ -3,6 +3,7 @@ import sys
 
 dry_run = '--dry-run' in sys.argv
 local   = '--local' in sys.argv
+detach  = '--detach' in sys.argv
 
 if not os.path.exists("slurm_logs"):
     os.makedirs("slurm_logs")
@@ -19,139 +20,62 @@ base_networks = {
 # Don't give it a save name - that gets generated for you
 jobs = [
 
-        # A couple of quick tests
+        # quick tests
         # {
-        #     'datasetdir': 'dataset-copied',
-        #     'num_train_batches': 10000,
-        #     'num_test_batches': 1000,
+        #     'datasetdir': 'dataset',
+        #     'dim_hidden': 20,
+        #     'feature_maps': 12,
+        #     'num_train_batches': 10,
+        #     'num_test_batches': 10,
         #     'epoch_size': 5,
         #     'tests_per_epoch': 5,
-        #     'learning_rate': '-0.00001'
+        #     'learning_rate': '-0.00001',
+        #     'motion_scale': '10',
         # },
-        # {
-        #     'datasetdir': 'dataset-copied',
-        #     'num_train_batches': 10000,
-        #     'num_test_batches': 1000,
-        #     'grayscale': True,
-        #     'epoch_size': 5,
-        #     'tests_per_epoch': 5,
-        #     'learning_rate': '-0.0001'
-        # },
-
 
         # the real jobs
-        # {
-        #     'datasetdir': 'dataset-copied',
-        #     'num_train_batches': 10000,
-        #     'num_test_batches': 1000,
-        #     'learning_rate': '-0.0001'
-        # },
-        # {
-        #     'datasetdir': 'dataset-copied',
-        #     'num_train_batches': 10000,
-        #     'num_test_batches': 1000,
-        #     'learning_rate': '-0.00005',
-        # },
-        # {
-        #     'datasetdir': 'dataset-copied',
-        #     'num_train_batches': 10000,
-        #     'num_test_batches': 1000,
-        #     'learning_rate': '-0.00001'
-        # },
         {
             'datasetdir': 'dataset-copied',
-            'num_train_batches': 10000,
-            'num_test_batches': 1000,
-            'learning_rate': '-0.000005'
+            'learning_rate': '-0.0001',
+            'motion_scale': 10,
         },
         {
             'datasetdir': 'dataset-copied',
-            'num_train_batches': 10000,
-            'num_test_batches': 1000,
-            'learning_rate': '-0.000001'
+            'learning_rate': '-0.00001',
+            'motion_scale': 10,
+        },
+        {
+            'datasetdir': 'dataset-copied',
+            'learning_rate': '-0.000001',
+            'motion_scale': 10,
+        },
+        {
+            'datasetdir': 'dataset-copied',
+            'learning_rate': '-0.0000001',
+            'motion_scale': 10,
         },
 
-
-        # {
-        #     'datasetdir': 'dataset-copied',
-        #     'num_train_batches': 10000,
-        #     'num_test_batches': 1000,
-        #     'dim_hidden': 400,
-        #     'feature_maps': 128,
-        #     'learning_rate': '-0.0001'
-        # },
-        # {
-        #     'datasetdir': 'dataset-copied',
-        #     'num_train_batches': 10000,
-        #     'num_test_batches': 1000,
-        #     'dim_hidden': 400,
-        #     'feature_maps': 128,
-        #     'learning_rate': '-0.00001'
-        # },
         {
             'datasetdir': 'dataset-copied',
-            'num_train_batches': 10000,
-            'num_test_batches': 1000,
-            'dim_hidden': 400,
-            'feature_maps': 128,
-            'learning_rate': '-0.000005'
+            'learning_rate': '-0.0001',
+            'motion_scale': 50,
         },
         {
             'datasetdir': 'dataset-copied',
-            'num_train_batches': 10000,
-            'num_test_batches': 1000,
-            'dim_hidden': 400,
-            'feature_maps': 128,
-            'learning_rate': '-0.000001'
+            'learning_rate': '-0.00001',
+            'motion_scale': 50,
+        },
+        {
+            'datasetdir': 'dataset-copied',
+            'learning_rate': '-0.000001',
+            'motion_scale': 50,
+        },
+        {
+            'datasetdir': 'dataset-copied',
+            'learning_rate': '-0.0000001',
+            'motion_scale': 50,
         },
 
-        # {
-        #     'datasetdir': 'dataset-copied',
-        #     'num_train_batches': 10000,
-        #     'num_test_batches': 1000,
-        #     'dim_hidden': 40,
-        #     'feature_maps': 48,
-        #     'learning_rate': '-0.0001'
-        # },
-        # {
-        #     'datasetdir': 'dataset-copied',
-        #     'num_train_batches': 10000,
-        #     'num_test_batches': 1000,
-        #     'dim_hidden': 40,
-        #     'feature_maps': 48,
-        #     'learning_rate': '-0.00001'
-        # },
-        {
-            'datasetdir': 'dataset-copied',
-            'num_train_batches': 10000,
-            'num_test_batches': 1000,
-            'dim_hidden': 40,
-            'feature_maps': 48,
-            'learning_rate': '-0.000005'
-        },
-        {
-            'datasetdir': 'dataset-copied',
-            'num_train_batches': 10000,
-            'num_test_batches': 1000,
-            'dim_hidden': 40,
-            'feature_maps': 48,
-            'learning_rate': '-0.000001'
-        },
-
-        # {
-        #     'datasetdir': 'dataset-copied',
-        #     'num_train_batches': 10000,
-        #     'num_test_batches': 1000,
-        #     'grayscale': True,
-        #     'learning_rate': '-0.0001'
-        # },
-        # {
-        #     'datasetdir': 'dataset-copied',
-        #     'num_train_batches': 10000,
-        #     'num_test_batches': 1000,
-        #     'grayscale': True,
-        #     'learning_rate': '-0.00001'
-        # },
     ]
 
 if dry_run:
@@ -160,7 +84,7 @@ else:
     print "Starting jobs:"
 
 for job in jobs:
-    jobname = "reconstruction"
+    jobname = "rec_mark2"
     flagstring = ""
     for flag in job:
         if isinstance(job[flag], bool):
@@ -187,7 +111,10 @@ for job in jobs:
 
     print(jobcommand)
     if local and not dry_run:
-        os.system(jobcommand + ' 2> slurm_logs/' + jobname + '.err 1> slurm_logs/' + jobname + '.out &')
+        if detach:
+            os.system(jobcommand + ' 2> slurm_logs/' + jobname + '.err 1> slurm_logs/' + jobname + '.out &')
+        else:
+            os.system(jobcommand)
 
     else:
         with open('slurm_scripts/' + jobname + '.slurm', 'w') as slurmfile:

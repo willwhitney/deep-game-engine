@@ -91,7 +91,7 @@ print('Num parameters before loading:', #parameters)
 
 coder = torch.load(paths.concat(opt.networks_dir, opt.coder, 'vxnet.net'))
 -- coder = build_atari_reconstruction_network_mark2(opt.dim_hidden, 24)
-encoder = coder.modules[1]
+encoder = coder.modules[1].modules[1]
 decoder = nn.Sequential()
 for i=2,4 do
   decoder:add(coder.modules[i]:clone())

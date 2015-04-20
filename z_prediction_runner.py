@@ -3,6 +3,7 @@ import sys
 
 dry_run = '--dry-run' in sys.argv
 local   = '--local' in sys.argv
+detach  = '--detach' in sys.argv
 
 if not os.path.exists("slurm_logs"):
     os.makedirs("slurm_logs")
@@ -109,8 +110,10 @@ for job in jobs:
 
     print(jobcommand)
     if local and not dry_run:
-        # os.system(jobcommand + ' 2> slurm_logs/' + jobname + '.err 1> slurm_logs/' + jobname + '.out &')
-        os.system(jobcommand)
+        if detach:
+            os.system(jobcommand + ' 2> slurm_logs/' + jobname + '.err 1> slurm_logs/' + jobname + '.out &')
+        else:
+            os.system(jobcommand)
 
     else:
         with open('slurm_scripts/' + jobname + '.slurm', 'w') as slurmfile:

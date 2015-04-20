@@ -12,6 +12,7 @@ require 'modules/LinearCR'
 require 'modules/Reparametrize'
 require 'modules/SelectiveOutputClamp'
 require 'modules/SelectiveGradientFilter'
+require 'modules/MotionBCECriterion'
 
 require 'rmsprop'
 require 'testf'
@@ -35,7 +36,8 @@ cmd:option('--datasetdir',        'dataset',      'dataset source directory')
 cmd:option('--dim_hidden',        200,            'dimension of the representation layer')
 cmd:option('--feature_maps',      96,             'number of feature maps')
 
-cmd:option('--criterion',         'BCE',          'error criterion to use. [BCE | MSE]')
+cmd:option('--motion_scale',      0,              'scaling factor for the (added) importance of motion')
+
 cmd:option('--learning_rate',     -0.0005,        'learning rate for the network')
 cmd:option('--momentum_decay',    0.1,            'decay rate for momentum in rmsprop')
 cmd:option('--update_decay',      0.01,           'update decay rate')
@@ -47,8 +49,8 @@ cmd:text()
 
 cmd:text("Probably don't change these:")
 cmd:option('--threads', 1, 'how many threads to use in torch')
-cmd:option('--num_train_batches', 24999,'number of batches to train with per epoch')
-cmd:option('--num_test_batches', 3999, 'number of batches to test with')
+cmd:option('--num_train_batches', 10000,'number of batches to train with per epoch')
+cmd:option('--num_test_batches', 1000, 'number of batches to test with')
 cmd:option('--epoch_size', 5000, 'number of training batches we call an epoch')
 cmd:option('--tests_per_epoch', 200, 'number of test batches to run every epoch')
 cmd:option('--bsize', 30, 'number of samples per batch')
@@ -80,15 +82,11 @@ MODE_TRAINING = "train"
 MODE_TEST = "test"
 
 
-model = build_atari_reconstruction_network(opt.dim_hidden, opt.feature_maps)
+model = build_atari_reconstruction_network_mark2(opt.dim_hidden, opt.feature_maps)
+print(model)
 
-if opt.criterion == 'BCE' then
-  criterion = nn.BCECriterion()
-  criterion.sizeAverage = false
-elseif opt.criterion == 'MSE' then
-  criterion = nn.MSECriterion()
-  criterion.sizeAverage = false
-end
+criterion = nn.MotionBCECriterion(opt.motion_scale)
+criterion.sizeAverage = false
 
 KLD = nn.KLDCriterion()
 KLD.sizeAverage = false
@@ -148,8 +146,8 @@ while true do
       end
 
       model:zeroGradParameters()
-      local f = model:forward(batch)
       -- print(f:size())
+      local f = model:forward(batch)
 
       local target = target or batch.new()
       target:resizeAs(f):copy(batch)
