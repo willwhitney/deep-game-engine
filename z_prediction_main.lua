@@ -89,10 +89,13 @@ cutorch.synchronize()
 parameters, gradients = predictor:getParameters()
 print('Num parameters before loading:', #parameters)
 
--- coder = torch.load(paths.concat(opt.networks_dir, opt.coder, 'vxnet.net'))
-coder = build_atari_reconstruction_network_mark2(opt.dim_hidden, 24)
+coder = torch.load(paths.concat(opt.networks_dir, opt.coder, 'vxnet.net'))
+-- coder = build_atari_reconstruction_network_mark2(opt.dim_hidden, 24)
 encoder = coder.modules[1]
-decoder = coder.modules[4]
+decoder = nn.Sequential()
+for i=2,4 do
+  decoder:add(coder.modules[i]:clone())
+end
 
 -- encoder:add(nn.JoinTable(2))
 -- decoder:insert(nn.)
@@ -139,10 +142,6 @@ while true do
     local input  = encoder:forward(input_images)   -- z_t
     local target = encoder:forward(target_images)  -- z_t+1
 
-    -- print(input_zs[1]:clone())
-    -- local input = input_zs:clone():cuda()
-    -- local target = target_zs:clone():cuda()
-
     input = input:cuda()
     target = target:cuda()
 
@@ -155,24 +154,9 @@ while true do
       end
 
       predictor:zeroGradParameters()
-      -- print{input, input_actions}
       local f = predictor:forward({input, input_actions})
-      -- print("f norm:", f:norm())
-      -- print("target norm:", target:norm())
-
-      -- local target = target or batch_images.new()
-      -- target:resizeAs(f):copy(batch_images)
-
       local err = - criterion:forward(f, target)
-      -- print("error:", err, "\n")
-      -- if tostring(err) == tostring(0/0) then
-        -- print(f)
-        -- print(input)
-        -- print(target)
-      -- end
-
       local df_dw = criterion:backward(f, target):mul(-1)
-      -- print("grad norm:", df_dw:norm())
 
       predictor:backward(input, df_dw)
       -- local predictor_output = predictor.output
@@ -186,7 +170,6 @@ while true do
 
       local lowerbound = err  -- + KLDerr
 
-      -- print("gradients:", gradients:norm(), "\n")
       return lowerbound, gradients
     end -- /opfunc
 
