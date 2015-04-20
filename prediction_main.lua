@@ -141,7 +141,7 @@ while true do
       local err = - criterion:forward(f, target)
       local df_dw = criterion:backward(f, target):mul(-1)
 
-      model:backward(batch_images,df_dw)
+      model:backward(input_images, df_dw)
       local predictor_output = predictor.output
 
       local KLDerr = KLD:forward(predictor_output, target)

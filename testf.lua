@@ -126,3 +126,97 @@ function test_atari_prediction(saveAll)
    reconstruction = 0
    return lowerbound
 end
+
+
+function test_z_prediction(saveAll)
+  -- in case it didn't already exist
+  os.execute('mkdir -p "' .. 'tmp' .. '"')
+
+  -- local vars
+  local time = sys.clock()
+  -- test over given dataset
+  print('<trainer> on testing Set:')
+  local reconstruction = 0
+  local lowerbound = 0
+
+  local save_dir = paths.concat('tmp', opt.name, 'epoch_' .. epoch)
+  os.execute('mkdir -p "' .. save_dir .. '"')
+
+   for test_index = 1, opt.tests_per_epoch do
+      collectgarbage()
+      -- create mini batch
+
+      local batch_images, batch_actions = load_random_atari_full_batch(MODE_TEST)
+      batch_images = batch_images:cuda()
+      batch_actions = batch_actions:cuda()
+
+      local input_images = batch_images[{{1, batch_images:size(1) - 1}}]
+      local target_images = batch_images[{{2, batch_images:size(1)}}]
+
+      local input_actions = batch_actions[{{1, batch_images:size(1) - 1}}]
+      input_actions:resize(batch_images:size(1) - 1, 1)
+
+      local input  = encoder:forward(input_images)   -- z_t
+      local target = encoder:forward(target_images)  -- z_t+1
+
+      -- print(input_zs[1]:clone())
+      -- local input = torch.Tensor(input_zs[1]:size(1), input_zs[1]:size(2) + input_zs[2]:size(2)):cuda()
+      -- input[{{}, {1, input_zs[1]:size(2)}}] = input_zs[1]:clone()
+      -- input[{{}, {1, input_zs[2]:size(2)}}] = input_zs[2]:clone()
+
+      -- local target = torch.Tensor(target_zs[1]:size(1), target_zs[1]:size(2) + target_zs[2]:size(2)):cuda()
+      -- target[{{}, {1, target_zs[1]:size(2)}}] = target_zs[1]:clone()
+      -- target[{{}, {1, target_zs[2]:size(2)}}] = target_zs[2]:clone()
+
+      input = input:cuda()
+      target = target:cuda()
+
+      -- disp progress
+      xlua.progress(test_index, opt.tests_per_epoch)
+
+      -- test samples
+      local preds = predictor:forward({input, input_actions})
+
+      local f = preds
+      local err = - criterion:forward(f, target)
+      -- print(f)
+      -- print(target)
+      -- print(err)
+      -- local KLDerr = KLD:forward(predictor.output, target)
+      lowerbound = lowerbound + err  -- + KLDerr
+
+      preds = preds:float()
+
+      reconstruction = reconstruction + torch.sum(torch.pow(preds-target:float(),2))
+
+      if saveAll then
+        torch.save(save_dir..'/preds' .. test_index, preds)
+        torch.save(save_dir..'/truth' .. test_index, target:float())
+      else
+        if test_index < 10 then
+          torch.save(save_dir..'/preds' .. test_index, preds)
+          torch.save(save_dir..'/truth' .. test_index, target:float())
+        end
+      end
+   end
+
+   -- timing
+   time = sys.clock() - time
+   time = time / opt.tests_per_epoch
+   print("<trainer> time to test 1 sample = " .. (time * 1000) .. 'ms')
+
+   reconstruction = reconstruction / (opt.bsize * opt.tests_per_epoch)
+   print('mean BCE error (test set)', reconstruction)
+   testLogger:add{['% mean class accuracy (test set)'] = reconstruction}
+   reconstruction = 0
+   return lowerbound
+end
+
+
+
+
+
+
+
+
+

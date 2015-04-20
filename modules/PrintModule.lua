@@ -8,7 +8,7 @@ end
 function PrintModule:updateOutput(input)
   print(self.name.." input dimensions: ")
   if type(input) == 'table' then
-    print("table:", #input)
+    print("table:", input)
   else
     print(input:size())
   end

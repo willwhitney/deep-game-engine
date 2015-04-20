@@ -21,74 +21,46 @@ base_networks = {
 jobs = [
         # A couple of quick tests
         {
-            'coder': 'angrand',
-            'datasetdir': 'dataset-copied',
-            'num_train_batches': 10000,
-            'num_test_batches': 1000,
+            'coder': 'default',
+            'dim_hidden': 40,
+            'datasetdir': 'dataset',
+            'num_train_batches': 10,
+            'num_test_batches': 10,
             'learning_rate': '-0.001',
             'epoch_size': 5,
             'tests_per_epoch': 5,
         },
 
         # the real jobs
-        {
-            'coder': 'angrand',
-            'datasetdir': 'dataset-copied',
-            'num_train_batches': 10000,
-            'num_test_batches': 1000,
-            'learning_rate': '-0.001'
-        },
-        {
-            'coder': 'angrand',
-            'datasetdir': 'dataset-copied',
-            'num_train_batches': 10000,
-            'num_test_batches': 1000,
-            'learning_rate': '-0.0001'
-        },
-        {
-            'coder': 'angrand',
-            'datasetdir': 'dataset-copied',
-            'num_train_batches': 10000,
-            'num_test_batches': 1000,
-            'learning_rate': '-0.00001',
-        },
-        {
-            'coder': 'angrand',
-            'datasetdir': 'dataset-copied',
-            'num_train_batches': 10000,
-            'num_test_batches': 1000,
-            'learning_rate': '-0.000001'
-        },
-
         # {
+        #     'coder': 'angrand',
         #     'datasetdir': 'dataset-copied',
         #     'num_train_batches': 10000,
         #     'num_test_batches': 1000,
-        #     'dim_prediction': 128,
+        #     'learning_rate': '-0.001'
+        # },
+        # {
+        #     'coder': 'angrand',
+        #     'datasetdir': 'dataset-copied',
+        #     'num_train_batches': 10000,
+        #     'num_test_batches': 1000,
         #     'learning_rate': '-0.0001'
         # },
         # {
+        #     'coder': 'angrand',
         #     'datasetdir': 'dataset-copied',
         #     'num_train_batches': 10000,
         #     'num_test_batches': 1000,
-        #     'dim_prediction': 128,
-        #     'learning_rate': '-0.00001'
+        #     'learning_rate': '-0.00001',
+        # },
+        # {
+        #     'coder': 'angrand',
+        #     'datasetdir': 'dataset-copied',
+        #     'num_train_batches': 10000,
+        #     'num_test_batches': 1000,
+        #     'learning_rate': '-0.000001'
         # },
 
-        # {
-        #     'datasetdir': 'dataset-copied',
-        #     'num_train_batches': 10000,
-        #     'num_test_batches': 1000,
-        #     'dim_prediction': 1024,
-        #     'learning_rate': '-0.0001'
-        # },
-        # {
-        #     'datasetdir': 'dataset-copied',
-        #     'num_train_batches': 10000,
-        #     'num_test_batches': 1000,
-        #     'dim_prediction': 1024,
-        #     'learning_rate': '-0.00001'
-        # },
 
     ]
 
@@ -137,7 +109,8 @@ for job in jobs:
 
     print(jobcommand)
     if local and not dry_run:
-        os.system(jobcommand + ' 2> slurm_logs/' + jobname + '.err 1> slurm_logs/' + jobname + '.out &')
+        # os.system(jobcommand + ' 2> slurm_logs/' + jobname + '.err 1> slurm_logs/' + jobname + '.out &')
+        os.system(jobcommand)
 
     else:
         with open('slurm_scripts/' + jobname + '.slurm', 'w') as slurmfile:

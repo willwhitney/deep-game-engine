@@ -1,5 +1,9 @@
 # Things to try
 
+## Optical flow
+- put a multiplier on the cost function for pixels that have flow
+
+
 ## Reconstruction
 - more feature maps on the decoder than encoder
     + especially in the earlier layers of decoder (widen the narrow end of the funnel)

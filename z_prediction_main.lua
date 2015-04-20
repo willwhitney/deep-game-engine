@@ -89,10 +89,13 @@ cutorch.synchronize()
 parameters, gradients = predictor:getParameters()
 print('Num parameters before loading:', #parameters)
 
-coder = torch.load(paths.concat(opt.networks_dir, opt.coder, 'vxnet.net'))
+-- coder = torch.load(paths.concat(opt.networks_dir, opt.coder, 'vxnet.net'))
+coder = build_atari_reconstruction_network_mark2(opt.dim_hidden, 24)
 encoder = coder.modules[1]
-decoder = coder.modules[3]
+decoder = coder.modules[4]
 
+-- encoder:add(nn.JoinTable(2))
+-- decoder:insert(nn.)
 -- coder_params = torch.load(paths.concat(opt.networks_dir, opt.coder, 'parameters.t7'))
 -- print('Loaded parameter size:', #p)
 -- parameters:copy(p)
@@ -133,8 +136,15 @@ while true do
     local input_actions = batch_actions[{{1, batch_images:size(1) - 1}}]
     input_actions:resize(batch_images:size(1) - 1, 1)
 
-    local input_zs = encoder:forward(input_images)  -- z_t
-    local target = encoder:forward(target_images)   -- z_t+1
+    local input  = encoder:forward(input_images)   -- z_t
+    local target = encoder:forward(target_images)  -- z_t+1
+
+    -- print(input_zs[1]:clone())
+    -- local input = input_zs:clone():cuda()
+    -- local target = target_zs:clone():cuda()
+
+    input = input:cuda()
+    target = target:cuda()
 
     --Optimization function
     local opfunc = function(x)
@@ -145,33 +155,38 @@ while true do
       end
 
       predictor:zeroGradParameters()
-      local f = predictor:forward({input_zs, input_actions})
-      -- print(f:size())
+      -- print{input, input_actions}
+      local f = predictor:forward({input, input_actions})
+      -- print("f norm:", f:norm())
+      -- print("target norm:", target:norm())
 
       -- local target = target or batch_images.new()
       -- target:resizeAs(f):copy(batch_images)
 
       local err = - criterion:forward(f, target)
+      -- print("error:", err, "\n")
+      -- if tostring(err) == tostring(0/0) then
+        -- print(f)
+        -- print(input)
+        -- print(target)
+      -- end
+
       local df_dw = criterion:backward(f, target):mul(-1)
+      -- print("grad norm:", df_dw:norm())
 
-      predictor:backward(batch_images,df_dw)
-      local predictor_output = predictor.output
+      predictor:backward(input, df_dw)
+      -- local predictor_output = predictor.output
 
-      local KLDerr = KLD:forward(predictor_output, target)
-      local dKLD_dw = KLD:backward(predictor_output, target)
+      -- local KLDerr = KLD:forward(predictor_output, target)
+      -- local dKLD_dw = KLD:backward(predictor_output, target)
 
-      predictor:backward(z_in.output, dKLD_dw)
+      -- predictor:backward(z_in.output, dKLD_dw)
       -- print(predictor.gradInput[1]:size())
-      encoder:backward(input_images, predictor.gradInput[1])
+      -- predictor:backward(input_images, predictor.gradInput[1])
 
-      local lowerbound = err  + KLDerr
+      local lowerbound = err  -- + KLDerr
 
-      if opt.verbose then
-        print("BCE",err/ (batch_images:size(1) - 1))
-        print("KLD", KLDerr/(batch_images:size(1) - 1))
-        print("lowerbound", lowerbound/(batch_images:size(1) - 1))
-      end
-
+      -- print("gradients:", gradients:norm(), "\n")
       return lowerbound, gradients
     end -- /opfunc
 
@@ -208,7 +223,7 @@ while true do
 
 
   -- Compute the lowerbound of the test set and save it
-  lowerbound_test = test_atari_prediction(false)
+  lowerbound_test = test_z_prediction(false)
   if true then
     if lowerbound_test_list then
       lowerbound_test_list = torch.cat(lowerbound_test_list
