@@ -23,7 +23,7 @@ function MotionBCECriterion:__init(motionScale)
    parent.__init(self)
    self.sizeAverage = true
    self.motionScale = motionScale
-   self.mask = torch.Tensor():cuda()
+   self.mask = torch.Tensor()
 end
 
 function MotionBCECriterion:updateOutput(input, target)
@@ -48,7 +48,8 @@ function MotionBCECriterion:updateOutput(input, target)
    end
 
    -- the error is Sum[(error at each point) * (importance of that point)]
-   self.term3:cmul(self:getScalingMask(target))
+   self:updateScalingMask(target)
+   self.term3:cmul(self.mask)
    self.output = - self.term3:sum()
 
    return self.output
@@ -87,26 +88,29 @@ function MotionBCECriterion:updateGradInput(input, target)
    -- as stated above,
    -- the error is Sum[(error at each point) * (importance of that point)]
    -- so the gradient is grad(error at each point) * (importance of that point)
-   self.gradInput:cmul(self:getScalingMask(target))
+   self:updateScalingMask(target)
+   self.gradInput:cmul(self.mask)
 
    return self.gradInput
 end
 
-function MotionBCECriterion:getScalingMask(target)
+function MotionBCECriterion:updateScalingMask(target)
    self.mask:resizeAs(target):fill(0)
    local nBatches = target:size(1)
 
    -- find all the places in each frame that changed since the frame before
    -- all of the "forward in time" changes
    self.mask[{{2, nBatches}}] = target[{{2, nBatches}}] - target[{{1, nBatches - 1}}]
+   print(self.mask:sum())
    self.mask = self.mask:abs()
 
    -- also find all the "backward in time" changes
    -- these are the same places in the frames;
    -- we want to highlight the importance of regions that **will** change too
-   self.mask[{{1, nBatches - 1}}] = self.mask[{{1, nBatches - 1}}] + self.mask[{{2, nBatches}}]
+   self.mask[{{1, nBatches - 1}}] = self.mask[{{1, nBatches - 1}}]
+                                    + self.mask[{{2, nBatches}}]--:clone()
 
-   -- normalize the mask to be 1 where things changed, 0 otherwise
+   -- normalize the tmask to be 1 where things changed, 0 otherwise
    self.mask:apply(function(el)
       if el > 0 then
          return 1

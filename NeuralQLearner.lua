@@ -79,13 +79,15 @@ function nql:__init(args)
     local msg, err = pcall(require, self.network)
     if not msg then
         -- try to load saved agent
-        local err_msg, exp = pcall(torch.load, self.network)
-        if not err_msg then
-            error("Could not find network file " .. self.network)
+        local success, exp = pcall(torch.load, self.network)
+        if not success then
+            error("Could not load network file " .. self.network)
         end
         if self.best and exp.best_model then
+            print("Loaded saved best_model from", self.network)
             self.network = exp.best_model
         else
+            print("Loaded saved model from", self.network)
             self.network = exp.model
         end
     else

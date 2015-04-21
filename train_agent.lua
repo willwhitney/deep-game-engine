@@ -51,12 +51,18 @@ local opt = cmd:parse(arg)
 local network_imported = (opt.network:sub(opt.network:len() - 2) == '.t7')
 
 --- General setup.
-local game_env, game_actions, agent, opt = setup(opt)
+game_env, game_actions, agent, opt = setup(opt)
 
-if network_imported then
-    local loaded_w = torch.load(opt.network:sub(1, opt.network:len() - 3) .. '.params.t7', 'ascii').network
-    agent.w = loaded_w
-end
+print("agent: ".. tostring(agent))
+print("agent network: ".. tostring(agent.network))
+-- print(agent.network.modules[3].weight)
+-- print("agent w: ".. tostring(agent.w))
+
+
+-- if network_imported then
+--     local loaded_w = torch.load(opt.network:sub(1, opt.network:len() - 3) .. '.params.t7', 'ascii').network
+--     agent.w = loaded_w:cuda()
+-- end
 
 -- override print to always flush the output
 local old_print = print
@@ -105,7 +111,7 @@ while step < opt.steps do
 
     -- only save every now and then,
     -- but make sure the batches stay whole! (sequential)
-    local save_flag = false
+    local save_flag = true
     if intra_batch_index == 1 then
         if torch.random(1000) ~= 1 then
             save_flag = false
@@ -266,3 +272,4 @@ while step < opt.steps do
         collectgarbage()
     end
 end
+--]]
