@@ -83,7 +83,7 @@ if not opt.learn then ---------------------------------------------
     while step < opt.steps do
      step = step + 1
 
-     local action_index = agent:greedy(agent:preprocess(screen):float())
+     local action_index = agent:perceive(reward, screen, terminal, true, 0)
 
      local save_flag = true
      if intra_batch_index == 1 then
