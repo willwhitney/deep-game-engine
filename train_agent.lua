@@ -55,9 +55,40 @@ game_env, game_actions, agent, opt = setup(opt)
 
 print("agent: ".. tostring(agent))
 print("agent network: ".. tostring(agent.network))
--- print(agent.network.modules[3].weight)
+print(agent.network.modules[3].weight[1][1])
 -- print("agent w: ".. tostring(agent.w))
 
+-- for k, v in pairs(agent) do print(k) end
+---------------------------------------------
+--
+agent.numSteps = 35000000
+
+local step = 0
+local screen, reward, terminal = game_env:getState()
+os.execute('mkdir -p tempscreens')
+
+while step < opt.steps do
+   step = step + 1
+
+
+
+   torch.save('tempscreens/step'..step, screen)
+   
+   if not terminal then
+      local action_index = agent:greedy(agent:preprocess(screen):float())
+      screen, reward, terminal = game_env:step(game_actions[action_index], true)
+   else
+      if opt.random_starts > 0 then
+	 screen, reward, terminal = game_env:nextRandomGame()
+      else
+	 screen, reward, terminal = game_env:newGame()
+      end
+   end
+end
+--]]
+----------------------------------------------
+
+--[[
 
 -- if network_imported then
 --     local loaded_w = torch.load(opt.network:sub(1, opt.network:len() - 3) .. '.params.t7', 'ascii').network
@@ -111,7 +142,7 @@ while step < opt.steps do
 
     -- only save every now and then,
     -- but make sure the batches stay whole! (sequential)
-    local save_flag = true
+    local save_flag = false
     if intra_batch_index == 1 then
         if torch.random(1000) ~= 1 then
             save_flag = false
@@ -232,6 +263,7 @@ while step < opt.steps do
     end
 
     if step % opt.save_freq == 0 or step == opt.steps then
+       print(agent.network.modules[3].weight[1][1])
         local s, a, r, s2, term = agent.valid_s, agent.valid_a, agent.valid_r,
             agent.valid_s2, agent.valid_term
         agent.valid_s, agent.valid_a, agent.valid_r, agent.valid_s2,
