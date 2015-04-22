@@ -117,7 +117,7 @@ for job in jobs:
             slurmfile.write("#SBATCH --job-name"+"=" + name + "\n")
             slurmfile.write("#SBATCH --output=slurm_logs/" + name + ".out\n")
             slurmfile.write("#SBATCH --error=slurm_logs/" + name + ".err\n")
-            slurmfile.write('./' + script_path + ' ' + rom)
+            slurmfile.write('bash ' + script_path + ' ' + rom)
 
         if not dry_run:
             os.system("sbatch -N 1 -c 1 --gres=gpu:1 -p gpu --time=6-23:00:00 slurm_scripts/" + name + ".slurm &")
