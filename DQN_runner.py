@@ -15,17 +15,48 @@ networks_prefix = "networks/"
 networks_suffix = ".t7"
 
 jobs = [
+        # test job
         {
-            'name': 'my_first_DQN',
-            'import': None,
+            'name': 'test',
+            'import': 'DQN_saving_params',
             'rom': 'breakout',
             'learn': False,
-            'steps': '10000',
+            'steps': '1000',
         },
+
+        # real jobs
         # {
-        #     'name': 'my_first_DQN',
+        #     'name': 'DQN_breakout_trained',
         #     'import': 'DQN_saving_params',
         #     'rom': 'breakout',
+        #     'learn': False,
+        #     'steps': '100000',
+        # },
+        # {
+        #     'name': 'DQN_fishing_derby_trained',
+        #     'import': 'DQN_fishing_derby_saving_params',
+        #     'rom': 'fishing_derby',
+        #     'learn': False,
+        #     'steps': '100000',
+        # },
+        # {
+        #     'name': 'DQN_freeway_trained',
+        #     'import': 'DQN_freeway_saving_params',
+        #     'rom': 'freeway',
+        #     'learn': False,
+        #     'steps': '100000',
+        # },
+        # {
+        #     'name': 'DQN_seaquest_trained',
+        #     'import': 'DQN_seaquest_saving_params',
+        #     'rom': 'seaquest',
+        #     'learn': False,
+        #     'steps': '100000',
+        # },
+        # {
+        #     'name': 'DQN_space_invaders_trained',
+        #     'import': 'DQN_space_invaders_saving_params',
+        #     'rom': 'space_invaders',
         #     'learn': False,
         #     'steps': '100000',
         # },
