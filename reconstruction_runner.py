@@ -35,45 +35,55 @@ jobs = [
 
         # the real jobs
         {
-            'datasetdir': 'dataset-copied',
+            'datasetdir': 'dataset_DQN_breakout_trained',
             'learning_rate': '-0.0001',
             'motion_scale': 10,
         },
         {
-            'datasetdir': 'dataset-copied',
+            'datasetdir': 'dataset_DQN_breakout_trained',
+            'learning_rate': '-0.00005',
+            'motion_scale': 10,
+        },
+        {
+            'datasetdir': 'dataset_DQN_breakout_trained',
+            'learning_rate': '-0.00002',
+            'motion_scale': 10,
+        },
+        {
+            'datasetdir': 'dataset_DQN_breakout_trained',
             'learning_rate': '-0.00001',
             'motion_scale': 10,
         },
         {
-            'datasetdir': 'dataset-copied',
-            'learning_rate': '-0.000001',
-            'motion_scale': 10,
-        },
-        {
-            'datasetdir': 'dataset-copied',
-            'learning_rate': '-0.0000001',
+            'datasetdir': 'dataset_DQN_breakout_trained',
+            'learning_rate': '-0.000005',
             'motion_scale': 10,
         },
 
         {
-            'datasetdir': 'dataset-copied',
+            'datasetdir': 'dataset_DQN_breakout_trained',
             'learning_rate': '-0.0001',
-            'motion_scale': 50,
+            'motion_scale': 3,
         },
         {
-            'datasetdir': 'dataset-copied',
+            'datasetdir': 'dataset_DQN_breakout_trained',
+            'learning_rate': '-0.00005',
+            'motion_scale': 3,
+        },
+        {
+            'datasetdir': 'dataset_DQN_breakout_trained',
+            'learning_rate': '-0.00002',
+            'motion_scale': 3,
+        },
+        {
+            'datasetdir': 'dataset_DQN_breakout_trained',
             'learning_rate': '-0.00001',
-            'motion_scale': 50,
+            'motion_scale': 3,
         },
         {
-            'datasetdir': 'dataset-copied',
-            'learning_rate': '-0.000001',
-            'motion_scale': 50,
-        },
-        {
-            'datasetdir': 'dataset-copied',
-            'learning_rate': '-0.0000001',
-            'motion_scale': 50,
+            'datasetdir': 'dataset_DQN_breakout_trained',
+            'learning_rate': '-0.000005',
+            'motion_scale': 3,
         },
 
     ]
