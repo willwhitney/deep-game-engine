@@ -63,6 +63,34 @@ game_env, game_actions, agent, opt = setup(opt)
 
 -- for k, v in pairs(agent) do print(k) end
 
+
+
+-- override print to always flush the output
+local old_print = print
+local print = function(...)
+    old_print(...)
+    io.flush()
+end
+
+local learn_start = agent.learn_start
+local start_time = sys.clock()
+local reward_counts = {}
+local episode_counts = {}
+local time_history = {}
+local v_history = {}
+local qmax_history = {}
+local td_history = {}
+local reward_history = {}
+local step = 0
+time_history[1] = 0
+
+local total_reward
+local nrewards
+local nepisodes
+local episode_reward
+
+
+
 local batch_size = 30
 local images = torch.Tensor(batch_size, 3, 210, 160)
 local actions = torch.Tensor(batch_size)
@@ -77,40 +105,39 @@ os.execute('mkdir -p ' .. dataset_output_dir .. '/test')
 os.execute('mkdir -p ' .. dataset_output_dir .. '/train')
 
 if not opt.learn then ---------------------------------------------
+    print("Generating data only. Not training.")
     local step = 0
     local screen, reward, terminal = game_env:getState()
 
     while step < opt.steps do
-     step = step + 1
+        step = step + 1
 
-     local action_index = agent:perceive(reward, screen, terminal, true, 0)
+        local action_index = agent:perceive(reward, screen, terminal, true, 0.1)
 
-     local save_flag = true
-     if intra_batch_index == 1 then
-        if torch.random(1) ~= 1 then
-            save_flag = false
-        end
-    end
-
-    if save_flag then
-        images[intra_batch_index] = screen:float()
-        actions[intra_batch_index] = action_index
-        intra_batch_index = intra_batch_index + 1
-
-        if intra_batch_index > batch_size then
-            if torch.random(test_fraction) == 1 then
-                completed_test_batches = completed_test_batches + 1
-                torch.save(dataset_output_dir .. '/test/images_batch_' .. completed_test_batches, images)
-                torch.save(dataset_output_dir .. '/test/actions_batch_' .. completed_test_batches, actions)
-            else
-                completed_train_batches = completed_train_batches + 1
-                torch.save(dataset_output_dir .. '/train/images_batch_' .. completed_train_batches, images)
-                torch.save(dataset_output_dir .. '/train/actions_batch_' .. completed_train_batches, actions)
+        local save_flag = true
+        if intra_batch_index == 1 then
+            if torch.random(10) ~= 1 then
+                save_flag = false
             end
+        end
 
-            intra_batch_index = 1
-                -- images = torch.Tensor(batch_size, 3, 210, 160)
-                -- actions = torch.Tensor(batch_size)
+        if save_flag then
+            images[intra_batch_index] = screen:float()
+            actions[intra_batch_index] = action_index
+            intra_batch_index = intra_batch_index + 1
+
+            if intra_batch_index > batch_size then
+                if torch.random(test_fraction) == 1 then
+                    completed_test_batches = completed_test_batches + 1
+                    torch.save(dataset_output_dir .. '/test/images_batch_' .. completed_test_batches, images)
+                    torch.save(dataset_output_dir .. '/test/actions_batch_' .. completed_test_batches, actions)
+                else
+                    completed_train_batches = completed_train_batches + 1
+                    torch.save(dataset_output_dir .. '/train/images_batch_' .. completed_train_batches, images)
+                    torch.save(dataset_output_dir .. '/train/actions_batch_' .. completed_train_batches, actions)
+                end
+
+                intra_batch_index = 1
             end
         end
 
@@ -123,6 +150,8 @@ if not opt.learn then ---------------------------------------------
                 screen, reward, terminal = game_env:newGame()
             end
         end
+
+        if step%1000 == 0 then collectgarbage() end
     end
 
 
@@ -135,30 +164,6 @@ else ----------------------------------------------
     --     local loaded_w = torch.load(opt.network:sub(1, opt.network:len() - 3) .. '.params.t7', 'ascii').network
     --     agent.w = loaded_w:cuda()
     -- end
-
-    -- override print to always flush the output
-    local old_print = print
-    local print = function(...)
-        old_print(...)
-        io.flush()
-    end
-
-    local learn_start = agent.learn_start
-    local start_time = sys.clock()
-    local reward_counts = {}
-    local episode_counts = {}
-    local time_history = {}
-    local v_history = {}
-    local qmax_history = {}
-    local td_history = {}
-    local reward_history = {}
-    local step = 0
-    time_history[1] = 0
-
-    local total_reward
-    local nrewards
-    local nepisodes
-    local episode_reward
 
     local screen, reward, terminal = game_env:getState()
 

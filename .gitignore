@@ -1,6 +1,8 @@
 *.ipynb
 dataset
 dataset-*
+dataset_*
+run_gpu_*
 backup
 .ipynb_checkpoints
 tmp
