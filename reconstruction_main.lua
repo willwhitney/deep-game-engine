@@ -82,7 +82,7 @@ MODE_TRAINING = "train"
 MODE_TEST = "test"
 
 
-model = build_atari_reconstruction_network_mark2(opt.dim_hidden, opt.feature_maps)
+model = build_atari_reconstruction_network_mark3(opt.dim_hidden, opt.feature_maps)
 print(model)
 
 criterion = nn.MotionBCECriterion(opt.motion_scale)

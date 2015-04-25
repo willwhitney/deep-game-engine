@@ -34,46 +34,46 @@ jobs = [
         # },
 
         # the real jobs
-        {
-            'datasetdir': 'dataset_DQN_breakout_trained',
-            'num_train_batches': 29999,
-            'num_test_batches': 10000,
-            'tests_per_epoch': 1500,
-            'learning_rate': '-0.0001',
-            'motion_scale': 10,
-        },
-        {
-            'datasetdir': 'dataset_DQN_breakout_trained',
-            'num_train_batches': 29999,
-            'num_test_batches': 10000,
-            'tests_per_epoch': 1500,
-            'learning_rate': '-0.00005',
-            'motion_scale': 10,
-        },
-        {
-            'datasetdir': 'dataset_DQN_breakout_trained',
-            'num_train_batches': 29999,
-            'num_test_batches': 10000,
-            'tests_per_epoch': 1500,
-            'learning_rate': '-0.00002',
-            'motion_scale': 10,
-        },
-        {
-            'datasetdir': 'dataset_DQN_breakout_trained',
-            'num_train_batches': 29999,
-            'num_test_batches': 10000,
-            'tests_per_epoch': 1500,
-            'learning_rate': '-0.00001',
-            'motion_scale': 10,
-        },
-        {
-            'datasetdir': 'dataset_DQN_breakout_trained',
-            'num_train_batches': 29999,
-            'num_test_batches': 10000,
-            'tests_per_epoch': 1500,
-            'learning_rate': '-0.000005',
-            'motion_scale': 10,
-        },
+        # {
+        #     'datasetdir': 'dataset_DQN_breakout_trained',
+        #     'num_train_batches': 29999,
+        #     'num_test_batches': 10000,
+        #     'tests_per_epoch': 1500,
+        #     'learning_rate': '-0.0001',
+        #     'motion_scale': 10,
+        # },
+        # {
+        #     'datasetdir': 'dataset_DQN_breakout_trained',
+        #     'num_train_batches': 29999,
+        #     'num_test_batches': 10000,
+        #     'tests_per_epoch': 1500,
+        #     'learning_rate': '-0.00005',
+        #     'motion_scale': 10,
+        # },
+        # {
+        #     'datasetdir': 'dataset_DQN_breakout_trained',
+        #     'num_train_batches': 29999,
+        #     'num_test_batches': 10000,
+        #     'tests_per_epoch': 1500,
+        #     'learning_rate': '-0.00002',
+        #     'motion_scale': 10,
+        # },
+        # {
+        #     'datasetdir': 'dataset_DQN_breakout_trained',
+        #     'num_train_batches': 29999,
+        #     'num_test_batches': 10000,
+        #     'tests_per_epoch': 1500,
+        #     'learning_rate': '-0.00001',
+        #     'motion_scale': 10,
+        # },
+        # {
+        #     'datasetdir': 'dataset_DQN_breakout_trained',
+        #     'num_train_batches': 29999,
+        #     'num_test_batches': 10000,
+        #     'tests_per_epoch': 1500,
+        #     'learning_rate': '-0.000005',
+        #     'motion_scale': 10,
+        # },
 
         {
             'datasetdir': 'dataset_DQN_breakout_trained',
@@ -124,7 +124,7 @@ else:
     print "Starting jobs:"
 
 for job in jobs:
-    jobname = "rec_mark2"
+    jobname = "rec_mark3"
     flagstring = ""
     for flag in job:
         if isinstance(job[flag], bool):
