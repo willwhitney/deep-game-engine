@@ -381,50 +381,76 @@ function build_atari_prediction_network(dim_hidden, feature_maps, dim_prediction
 end
 
 
-function build_z_prediction_network(dim_hidden, dim_prediction)
-
+function build_z_prediction_network_mark1(dim_hidden, input_replication, dim_prediction)
   predictor = nn.Sequential()
-  -- mu-sigma-control to prediction coding
-  predictor:add(nn.Linear(dim_hidden * 2 + 1, dim_prediction))
-  predictor:add(cudnn.Sigmoid())
+
+  predictor:add(nn.Linear(dim_hidden * 2 + input_replication, dim_prediction))
+  predictor:add(nn.ReLU())
   predictor:add(nn.Linear(dim_prediction, dim_prediction))
-  predictor:add(cudnn.Sigmoid())
-  predictor:add(nn.Linear(dim_prediction, dim_hidden * 2))
-  predictor:add(cudnn.Sigmoid())
+  predictor:add(nn.ReLU())
+  predictor:add(nn.Linear(dim_prediction, dim_prediction))
+  predictor:add(nn.ReLU())
 
-  -- local z = nn.ConcatTable()
+  local z = nn.ConcatTable()
 
-  -- local mu = nn.Sequential()
-  --   mu:add(nn.LinearCR(dim_prediction, dim_hidden))
-  -- z:add(mu)
+  local mu = nn.Sequential()
+    mu:add(nn.LinearCR(dim_prediction, dim_hidden))
+  z:add(mu)
 
-  -- local sigma = nn.Sequential()
-  --   sigma:add(nn.LinearCR(dim_prediction, dim_hidden))
-  -- z:add(sigma)
-  -- predictor:add(z)
+  local sigma = nn.Sequential()
+    sigma:add(nn.LinearCR(dim_prediction, dim_hidden))
+  z:add(sigma)
 
   ----------- Put it together -------------------------
-  model = nn.Sequential()
+  local model = nn.Sequential()
 
-  -- inputs = nn.Sequential()
+  local inputTable = nn.ParallelTable()
+    inputTable:add(nn.Identity())
+    inputTable:add(nn.Identity())
+    inputTable:add(nn.Replicate(input_replication, 2))
+  model:add(inputTable)
 
-  -- local par = nn.ParallelTable()
-  -- par:add(nn.JoinTable(2)) -- stick mu and sigma togeter
-  -- par:add(nn.Identity())   -- pass through the controller signal
-
-  -- inputs:add(nn.PrintModule('beginning of input'))
-  -- inputs:add(par)
-  -- inputs:add(nn.JoinTable(2)) -- join together musigma and controller
-  -- inputs:add(nn.PrintModule('end of input'))
-
-  -- model:add(inputs)
-  -- model:add(par)
-  -- model:add(nn.PrintModule('before join'))
-  model:add(nn.Identity)
   model:add(nn.JoinTable(2))
-  -- model:add(nn.PrintModule('before predictor'))
   model:add(predictor)
-  -- model:add(nn.JoinTable(2))
+  model:add(z)
+
+  model:cuda()
+  collectgarbage()
+  return model
+end
+
+function build_z_prediction_network_mark1(dim_hidden, input_replication, dim_prediction)
+  predictor = nn.Sequential()
+
+  predictor:add(nn.Linear(dim_hidden * 2 + input_replication, dim_prediction))
+  predictor:add(nn.ReLU())
+  predictor:add(nn.Linear(dim_prediction, dim_prediction))
+  predictor:add(nn.ReLU())
+  predictor:add(nn.Linear(dim_prediction, dim_prediction))
+  predictor:add(nn.ReLU())
+
+  local z = nn.ConcatTable()
+
+  local mu = nn.Sequential()
+    mu:add(nn.LinearCR(dim_prediction, dim_hidden))
+  z:add(mu)
+
+  local sigma = nn.Sequential()
+    sigma:add(nn.LinearCR(dim_prediction, dim_hidden))
+  z:add(sigma)
+
+  ----------- Put it together -------------------------
+  local model = nn.Sequential()
+
+  local inputTable = nn.ParallelTable()
+    inputTable:add(nn.Identity())
+    inputTable:add(nn.Identity())
+    inputTable:add(nn.Replicate(input_replication, 2))
+  model:add(inputTable)
+
+  model:add(nn.JoinTable(2))
+  model:add(predictor)
+  model:add(z)
 
   model:cuda()
   collectgarbage()

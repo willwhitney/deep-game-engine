@@ -143,73 +143,62 @@ function test_z_prediction(saveAll)
   os.execute('mkdir -p "' .. save_dir .. '"')
 
    for test_index = 1, opt.tests_per_epoch do
-      collectgarbage()
-      -- create mini batch
+    -- disp progress
+    xlua.progress(test_index, opt.tests_per_epoch)
+    collectgarbage()
+    -- create mini batch
 
-      local batch_images, batch_actions = load_random_atari_full_batch(MODE_TEST)
-      batch_images = batch_images:cuda()
-      batch_actions = batch_actions:cuda()
+    local batch_images, batch_actions = load_random_atari_full_batch(MODE_TEST)
+    batch_images = batch_images:cuda()
+    batch_actions = batch_actions:cuda()
 
-      local input_images = batch_images[{{1, batch_images:size(1) - 1}}]
-      local target_images = batch_images[{{2, batch_images:size(1)}}]
+    local input_images = batch_images[{{1, batch_images:size(1) - 1}}]
+    local target_images = batch_images[{{2, batch_images:size(1)}}]
 
-      local input_actions = batch_actions[{{1, batch_images:size(1) - 1}}]
-      input_actions:resize(batch_images:size(1) - 1, 1)
+    local input_actions = batch_actions[{{1, batch_images:size(1) - 1}}]
 
-      local input  = encoder:forward(input_images)   -- z_t
-      local target = encoder:forward(target_images)  -- z_t+1
+    local input  = encoder:forward(input_images)   -- z_t
+    local target = encoder:forward(target_images)  -- z_t+1
 
-      -- print(input_zs[1]:clone())
-      -- local input = torch.Tensor(input_zs[1]:size(1), input_zs[1]:size(2) + input_zs[2]:size(2)):cuda()
-      -- input[{{}, {1, input_zs[1]:size(2)}}] = input_zs[1]:clone()
-      -- input[{{}, {1, input_zs[2]:size(2)}}] = input_zs[2]:clone()
+    -- test samples
+    local input_joined = {
+        input[1]:clone(),
+        input[2]:clone()
+      }
+    table.insert(input_joined, input_actions)
 
-      -- local target = torch.Tensor(target_zs[1]:size(1), target_zs[1]:size(2) + target_zs[2]:size(2)):cuda()
-      -- target[{{}, {1, target_zs[1]:size(2)}}] = target_zs[1]:clone()
-      -- target[{{}, {1, target_zs[2]:size(2)}}] = target_zs[2]:clone()
+    local predictor_output = predictor:forward(input_joined)
+    local KLDerr = KLD:forward(predictor_output, target)
 
-      input = input:cuda()
-      target = target:cuda()
+    lowerbound = lowerbound + KLDerr
 
-      -- disp progress
-      xlua.progress(test_index, opt.tests_per_epoch)
+    local pred_images = decoder:forward(predictor_output):float()
+    reconstruction = reconstruction + (pred_images-target_images:float()):norm()
 
-      -- test samples
-      local preds = predictor:forward({input, input_actions})
-
-      local f = preds
-      local err = - criterion:forward(f, target)
-      -- print(f)
-      -- print(target)
-      -- print(err)
-      -- local KLDerr = KLD:forward(predictor.output, target)
-      lowerbound = lowerbound + err  -- + KLDerr
-
-      preds = preds:float()
-
-      reconstruction = reconstruction + torch.sum(torch.pow(preds-target:float(),2))
-
-      if saveAll then
-        torch.save(save_dir..'/preds' .. test_index, preds)
-        torch.save(save_dir..'/truth' .. test_index, target:float())
-      else
-        if test_index < 10 then
-          torch.save(save_dir..'/preds' .. test_index, preds)
-          torch.save(save_dir..'/truth' .. test_index, target:float())
-        end
+    if saveAll then
+      -- local pred_images = decoder:forward(predictor_output):float()
+      torch.save(save_dir..'/preds' .. test_index, pred_images)
+      torch.save(save_dir..'/truth' .. test_index, target_images:float())
+    else
+      if test_index < 10 then
+        -- local pred_images = decoder:forward(predictor_output):float()
+        torch.save(save_dir..'/preds' .. test_index, pred_images)
+        torch.save(save_dir..'/truth' .. test_index, target_images:float())
       end
-   end
+    end
+ end
 
-   -- timing
-   time = sys.clock() - time
-   time = time / opt.tests_per_epoch
-   print("<trainer> time to test 1 sample = " .. (time * 1000) .. 'ms')
+  -- timing
+  time = sys.clock() - time
+  time = time / opt.tests_per_epoch
+  print("<trainer> time to test 1 sample = " .. (time * 1000) .. 'ms')
 
-   reconstruction = reconstruction / (opt.bsize * opt.tests_per_epoch)
-   print('mean BCE error (test set)', reconstruction)
-   testLogger:add{['% mean class accuracy (test set)'] = reconstruction}
-   reconstruction = 0
-   return lowerbound
+  -- reconstruction = reconstruction / (opt.bsize * opt.tests_per_epoch)
+  print('KLD (test set)', lowerbound / opt.tests_per_epoch)
+  print('mean BCE reconstruction error (test set)', reconstruction / opt.tests_per_epoch)
+  KLDLogger:add{['KLD (test set)'] = lowerbound / opt.tests_per_epoch}
+  BCELogger:add{['BCE on reconstruction (test set)'] = reconstruction / opt.tests_per_epoch}
+  return lowerbound
 end
 
 

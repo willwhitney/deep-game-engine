@@ -14,53 +14,58 @@ if not os.path.exists("slurm_scripts"):
 
 networks_dir = '/om/user/wwhitney/deep-game-engine/networks/'
 base_networks = {
-    'angrand': networks_dir + 'angrand'
+    'angrand':        networks_dir + 'angrand',
+    'rec_mark3_best': networks_dir + 'rec_mark3_best',
     }
 
 
 # Don't give it a save name - that gets generated for you
 jobs = [
         # A couple of quick tests
-        {
-            'coder': 'default',
-            'dim_hidden': 40,
-            'datasetdir': 'dataset',
-            'num_train_batches': 10,
-            'num_test_batches': 10,
-            'learning_rate': '-0.001',
-            'epoch_size': 5,
-            'tests_per_epoch': 5,
-        },
+        # {
+        #     'coder': 'default',
+        #     'dim_hidden': 40,
+        #     'datasetdir': 'dataset',
+        #     'num_train_batches': 10,
+        #     'num_test_batches': 10,
+        #     'learning_rate': '-0.001',
+        #     'epoch_size': 5,
+        #     'tests_per_epoch': 5,
+        # },
 
         # the real jobs
-        # {
-        #     'coder': 'angrand',
-        #     'datasetdir': 'dataset-copied',
-        #     'num_train_batches': 10000,
-        #     'num_test_batches': 1000,
-        #     'learning_rate': '-0.001'
-        # },
-        # {
-        #     'coder': 'angrand',
-        #     'datasetdir': 'dataset-copied',
-        #     'num_train_batches': 10000,
-        #     'num_test_batches': 1000,
-        #     'learning_rate': '-0.0001'
-        # },
-        # {
-        #     'coder': 'angrand',
-        #     'datasetdir': 'dataset-copied',
-        #     'num_train_batches': 10000,
-        #     'num_test_batches': 1000,
-        #     'learning_rate': '-0.00001',
-        # },
-        # {
-        #     'coder': 'angrand',
-        #     'datasetdir': 'dataset-copied',
-        #     'num_train_batches': 10000,
-        #     'num_test_batches': 1000,
-        #     'learning_rate': '-0.000001'
-        # },
+        {
+            'coder': 'rec_mark3_best',
+            'datasetdir': 'dataset_DQN_breakout_trained',
+            'num_train_batches': 29999,
+            'num_test_batches': 10000,
+            'tests_per_epoch': 1500,
+            'learning_rate': '-0.001',
+        },
+        {
+            'coder': 'rec_mark3_best',
+            'datasetdir': 'dataset_DQN_breakout_trained',
+            'num_train_batches': 29999,
+            'num_test_batches': 10000,
+            'tests_per_epoch': 1500,
+            'learning_rate': '-0.0001',
+        },
+        {
+            'coder': 'rec_mark3_best',
+            'datasetdir': 'dataset_DQN_breakout_trained',
+            'num_train_batches': 29999,
+            'num_test_batches': 10000,
+            'tests_per_epoch': 1500,
+            'learning_rate': '-0.00001',
+        },
+        {
+            'coder': 'rec_mark3_best',
+            'datasetdir': 'dataset_DQN_breakout_trained',
+            'num_train_batches': 29999,
+            'num_test_batches': 10000,
+            'tests_per_epoch': 1500,
+            'learning_rate': '-0.000001',
+        },
 
 
     ]

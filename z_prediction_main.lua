@@ -34,7 +34,9 @@ cmd:option('--name',              'default',      'the name for this network. us
 cmd:option('--datasetdir',        'dataset',      'dataset source directory')
 
 cmd:option('--dim_hidden',        200,            'dimension of the representation layer')
-cmd:option('--dim_prediction',    256,            'dimension of the prediction layer')
+cmd:option('--dim_prediction',    512,            'dimension of the prediction layer')
+
+cmd:option('--input_replication', 10,              'number of times to replicate controller input in input to predictor')
 
 cmd:option('--learning_rate',     -0.0005,        'learning rate for the network')
 cmd:option('--momentum_decay',    0.1,            'decay rate for momentum in rmsprop')
@@ -72,7 +74,7 @@ MODE_TRAINING = "train"
 MODE_TEST = "test"
 
 
-predictor = build_z_prediction_network(opt.dim_hidden, opt.dim_prediction)
+predictor = build_z_prediction_network_mark1(opt.dim_hidden, opt.input_replication, opt.dim_prediction)
 
 
 criterion = nn.BCECriterion()
@@ -90,19 +92,13 @@ parameters, gradients = predictor:getParameters()
 print('Num parameters before loading:', #parameters)
 
 coder = torch.load(paths.concat(opt.networks_dir, opt.coder, 'vxnet.net'))
--- coder = build_atari_reconstruction_network_mark2(opt.dim_hidden, 24)
-encoder = coder.modules[1].modules[1]
+-- coder = build_atari_reconstruction_network_mark3(opt.dim_hidden, 24)
+
+encoder = coder.modules[1]
 decoder = nn.Sequential()
-for i=2,4 do
+for i=2,3 do
   decoder:add(coder.modules[i]:clone())
 end
-
--- encoder:add(nn.JoinTable(2))
--- decoder:insert(nn.)
--- coder_params = torch.load(paths.concat(opt.networks_dir, opt.coder, 'parameters.t7'))
--- print('Loaded parameter size:', #p)
--- parameters:copy(p)
-
 
 if opt.import ~= '' then
   -- load all the values from the network stored in opt.import
@@ -117,7 +113,8 @@ else
   epoch = 0
 end
 
-testLogger = optim.Logger(paths.concat(opt.save, 'test.log'))
+KLDLogger = optim.Logger(paths.concat(opt.save, 'test_KLD.log'))
+BCELogger = optim.Logger(paths.concat(opt.save, 'test_BCE.log'))
 reconstruction = 0
 
 while true do
@@ -137,13 +134,12 @@ while true do
     local target_images = batch_images[{{2, batch_images:size(1)}}]
 
     local input_actions = batch_actions[{{1, batch_images:size(1) - 1}}]
-    input_actions:resize(batch_images:size(1) - 1, 1)
 
     local input  = encoder:forward(input_images)   -- z_t
     local target = encoder:forward(target_images)  -- z_t+1
 
-    input = input:cuda()
-    target = target:cuda()
+    -- input = input:cuda()
+    -- target = target:cuda()
 
     --Optimization function
     local opfunc = function(x)
@@ -154,21 +150,21 @@ while true do
       end
 
       predictor:zeroGradParameters()
-      local f = predictor:forward({input, input_actions})
-      local err = - criterion:forward(f, target)
-      local df_dw = criterion:backward(f, target):mul(-1)
 
-      predictor:backward(input, df_dw)
-      -- local predictor_output = predictor.output
+      local input_joined = {
+          input[1]:clone(),
+          input[2]:clone()
+        }
+      table.insert(input_joined, input_actions)
 
-      -- local KLDerr = KLD:forward(predictor_output, target)
-      -- local dKLD_dw = KLD:backward(predictor_output, target)
+      local predictor_output = predictor:forward(input_joined)
 
-      -- predictor:backward(z_in.output, dKLD_dw)
-      -- print(predictor.gradInput[1]:size())
-      -- predictor:backward(input_images, predictor.gradInput[1])
+      local KLDerr = KLD:forward(predictor_output, target)
+      local dKLD_dw = KLD:backward(predictor_output, target)
 
-      local lowerbound = err  -- + KLDerr
+      predictor:backward(input_joined, dKLD_dw)
+
+      local lowerbound = KLDerr
 
       return lowerbound, gradients
     end -- /opfunc
@@ -223,12 +219,6 @@ while true do
     torch.save(opt.save .. '/state.t7', state)
     torch.save(opt.save .. '/lowerbound.t7', torch.Tensor(lowerboundlist))
     torch.save(opt.save .. '/lowerbound_test.t7', torch.Tensor(lowerbound_test_list))
-  end
-
-  -- plot errors
-  if false then
-    testLogger:style{['% mean class accuracy (test set)'] = '-'}
-    testLogger:plot()
   end
 end
 
