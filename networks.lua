@@ -463,7 +463,7 @@ function build_z_prediction_network_mark2(dim_hidden, input_replication, dim_pre
 
   predictor:add(nn.Linear(dim_hidden * 2 + input_replication, dim_prediction))
   predictor:add(nn.ReLU())
-  predictor:add(nn.Linear(dim_prediction, 10 * dim_prediction))
+  predictor:add(nn.Linear(dim_prediction, 5 * dim_prediction))
   predictor:add(nn.ReLU())
   predictor:add(nn.Linear(10 * dim_prediction, dim_prediction))
   predictor:add(nn.ReLU())
