@@ -12,6 +12,7 @@ require 'modules/LinearCR'
 require 'modules/Reparametrize'
 require 'modules/SelectiveOutputClamp'
 require 'modules/SelectiveGradientFilter'
+require 'modules/Replicate'
 
 require 'rmsprop'
 require 'testf'

@@ -445,7 +445,7 @@ function build_z_prediction_network_mark1(dim_hidden, input_replication, dim_pre
   local inputTable = nn.ParallelTable()
     inputTable:add(nn.Identity())
     inputTable:add(nn.Identity())
-    inputTable:add(nn.Replicate(input_replication, 2))
+    inputTable:add(nn.ReplicateLocal(input_replication, 2))
   model:add(inputTable)
 
   model:add(nn.JoinTable(2))
