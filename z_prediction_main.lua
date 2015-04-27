@@ -34,6 +34,8 @@ cmd:option('--networks_dir',      'networks',     'the directory to save the res
 cmd:option('--name',              'default',      'the name for this network. used for saving the network and results')
 cmd:option('--datasetdir',        'dataset',      'dataset source directory')
 
+cmd:option('--version',           'mark1',        'which network design version to use')
+
 cmd:option('--dim_hidden',        200,            'dimension of the representation layer')
 cmd:option('--dim_prediction',    512,            'dimension of the prediction layer')
 
@@ -74,9 +76,15 @@ f:close()
 MODE_TRAINING = "train"
 MODE_TEST = "test"
 
-
-predictor = build_z_prediction_network_mark1(opt.dim_hidden, opt.input_replication, opt.dim_prediction)
-
+if opt.version == 'mark1' then
+  predictor = build_z_prediction_network_mark1(opt.dim_hidden, opt.input_replication, opt.dim_prediction)
+elseif opt.version == 'mark2' then
+  predictor = build_z_prediction_network_mark2(opt.dim_hidden, opt.input_replication, opt.dim_prediction)
+elseif opt.version == 'mark3' then
+  predictor = build_z_prediction_network_mark3(opt.dim_hidden, opt.input_replication, opt.dim_prediction)
+else
+  error("Invalid network version specified!")
+end
 
 criterion = nn.BCECriterion()
 criterion.sizeAverage = false

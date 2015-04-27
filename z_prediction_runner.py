@@ -23,8 +23,9 @@ base_networks = {
 jobs = [
         # A couple of quick tests
         # {
+        #     'version': 'mark3',
         #     'coder': 'default',
-        #     'dim_hidden': 40,
+        #     'dim_hidden': 20,
         #     'datasetdir': 'dataset',
         #     'num_train_batches': 10,
         #     'num_test_batches': 10,
@@ -35,6 +36,7 @@ jobs = [
 
         # the real jobs
         {
+            'version': 'mark2',
             'coder': 'rec_mark3_best',
             'datasetdir': 'dataset_DQN_breakout_trained',
             'num_train_batches': 29999,
@@ -43,6 +45,7 @@ jobs = [
             'learning_rate': '-0.001',
         },
         {
+            'version': 'mark2',
             'coder': 'rec_mark3_best',
             'datasetdir': 'dataset_DQN_breakout_trained',
             'num_train_batches': 29999,
@@ -51,6 +54,7 @@ jobs = [
             'learning_rate': '-0.0001',
         },
         {
+            'version': 'mark2',
             'coder': 'rec_mark3_best',
             'datasetdir': 'dataset_DQN_breakout_trained',
             'num_train_batches': 29999,
@@ -59,6 +63,44 @@ jobs = [
             'learning_rate': '-0.00001',
         },
         {
+            'version': 'mark2',
+            'coder': 'rec_mark3_best',
+            'datasetdir': 'dataset_DQN_breakout_trained',
+            'num_train_batches': 29999,
+            'num_test_batches': 10000,
+            'tests_per_epoch': 1500,
+            'learning_rate': '-0.000001',
+        },
+
+        {
+            'version': 'mark3',
+            'coder': 'rec_mark3_best',
+            'datasetdir': 'dataset_DQN_breakout_trained',
+            'num_train_batches': 29999,
+            'num_test_batches': 10000,
+            'tests_per_epoch': 1500,
+            'learning_rate': '-0.001',
+        },
+        {
+            'version': 'mark3',
+            'coder': 'rec_mark3_best',
+            'datasetdir': 'dataset_DQN_breakout_trained',
+            'num_train_batches': 29999,
+            'num_test_batches': 10000,
+            'tests_per_epoch': 1500,
+            'learning_rate': '-0.0001',
+        },
+        {
+            'version': 'mark3',
+            'coder': 'rec_mark3_best',
+            'datasetdir': 'dataset_DQN_breakout_trained',
+            'num_train_batches': 29999,
+            'num_test_batches': 10000,
+            'tests_per_epoch': 1500,
+            'learning_rate': '-0.00001',
+        },
+        {
+            'version': 'mark3',
             'coder': 'rec_mark3_best',
             'datasetdir': 'dataset_DQN_breakout_trained',
             'num_train_batches': 29999,
