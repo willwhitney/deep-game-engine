@@ -49,10 +49,10 @@ cmd:text()
 
 cmd:text("Probably don't change these:")
 cmd:option('--threads', 1, 'how many threads to use in torch')
-cmd:option('--num_train_batches', 10000,'number of batches to train with per epoch')
-cmd:option('--num_test_batches', 1000, 'number of batches to test with')
+cmd:option('--num_train_batches', 29999,'number of batches to train with per epoch')
+cmd:option('--num_test_batches', 10000, 'number of batches to test with')
 cmd:option('--epoch_size', 5000, 'number of training batches we call an epoch')
-cmd:option('--tests_per_epoch', 200, 'number of test batches to run every epoch')
+cmd:option('--tests_per_epoch', 1500, 'number of test batches to run every epoch')
 cmd:option('--bsize', 30, 'number of samples per batch')
 
 cmd:text()
@@ -60,12 +60,6 @@ cmd:text()
 opt = cmd:parse(arg)
 opt.save = paths.concat(opt.networks_dir, opt.name)
 os.execute('mkdir -p "' .. opt.save .. '"')
-
--- config = {
---     learningRate = opt.learning_rate,
---     momentumDecay = opt.momentum_decay,
---     updateDecay = 0.01
---   }
 
 torch.setnumthreads(opt.threads)
 
