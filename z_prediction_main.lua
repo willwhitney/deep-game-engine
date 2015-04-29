@@ -13,6 +13,7 @@ require 'modules/Reparametrize'
 require 'modules/SelectiveOutputClamp'
 require 'modules/SelectiveGradientFilter'
 require 'modules/Replicate'
+require 'modules/MVNormalKLDCriterion'
 
 require 'rmsprop'
 require 'testf'
@@ -39,7 +40,7 @@ cmd:option('--version',           'mark1',        'which network design version 
 cmd:option('--dim_hidden',        200,            'dimension of the representation layer')
 cmd:option('--dim_prediction',    512,            'dimension of the prediction layer')
 
-cmd:option('--input_replication', 10,              'number of times to replicate controller input in input to predictor')
+cmd:option('--input_replication', 10,             'number of times to replicate controller input in input to predictor')
 
 cmd:option('--learning_rate',     -0.0005,        'learning rate for the network')
 cmd:option('--momentum_decay',    0.1,            'decay rate for momentum in rmsprop')
@@ -61,6 +62,9 @@ cmd:text()
 opt = cmd:parse(arg)
 opt.save = paths.concat(opt.networks_dir, opt.name)
 os.execute('mkdir -p "' .. opt.save .. '"')
+
+-- this needs a positive learning rate, unlike our other tests
+opt.learning_rate = - opt.learning_rate
 
 torch.setnumthreads(opt.threads)
 
@@ -89,8 +93,7 @@ end
 criterion = nn.BCECriterion()
 criterion.sizeAverage = false
 
-KLD = nn.KLDCriterion()
-KLD.sizeAverage = false
+KLD = nn.MVNormalKLDCriterion()
 
 criterion:cuda()
 KLD:cuda()
@@ -162,13 +165,15 @@ while true do
 
       local input_joined = {
           input[1]:clone(),
-          input[2]:clone()
+          input[2]:clone(),
+          input_actions,
         }
-      table.insert(input_joined, input_actions)
+      -- table.insert(input_joined, input_actions)
 
       local predictor_output = predictor:forward(input_joined)
 
       local KLDerr = KLD:forward(predictor_output, target)
+      print(KLDerr)
       local dKLD_dw = KLD:backward(predictor_output, target)
 
       predictor:backward(input_joined, dKLD_dw)

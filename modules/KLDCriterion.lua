@@ -46,7 +46,6 @@ function KLDCriterion:updateGradInput(input, target)
     self.gradInput[1]:resizeAs(input[1])
     self.gradInput[1]:copy(input[1]):mul(-1)
 
-
     self.term = self.term or input[2].new()
     self.term:resizeAs(input[2])
     self.term:copy(input[2])
