@@ -11,3 +11,4 @@ slurm_scripts
 slurm_logs
 *.out
 *.err
+*.nb
