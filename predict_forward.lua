@@ -65,7 +65,7 @@ for i = 2, 3 do
 	decoder:add(coder.modules[i])
 end
 
-predictor = torch.load(paths.concat(opt.networks_dir, opt.coder, 'vxnet.net'))
+predictor = torch.load(paths.concat(opt.networks_dir, opt.import, 'vxnet.net'))
 
 batch_images, batch_actions = load_atari_full_batch(MODE_TRAINING, 1)
 test_image = batch_images[1]:clone():reshape(1, 3, 210, 160)
