@@ -29,7 +29,7 @@ cmd:text()
 cmd:text('Options')
 
 cmd:text('Change these options:')
-cmd:option('--import',            '',             'the containing folder of the network to load in. does nothing with `no_load`')
+cmd:option('--import',            '',             'the containing folder of the network to load in')
 cmd:option('--coder',             '',             'the containing folder of the autoencoder network to use as en/de-coder')
 cmd:option('--networks_dir',      'networks',     'the directory to save the resulting networks in')
 cmd:option('--name',              'default',      'the name for this network. used for saving the network and results')
