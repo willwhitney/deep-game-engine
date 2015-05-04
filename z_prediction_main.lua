@@ -29,11 +29,11 @@ cmd:text()
 cmd:text('Options')
 
 cmd:text('Change these options:')
-cmd:option('--import',            '',             'the containing folder of the network to load in')
-cmd:option('--coder',             '',             'the containing folder of the autoencoder network to use as en/de-coder')
-cmd:option('--networks_dir',      'networks',     'the directory to save the resulting networks in')
-cmd:option('--name',              'default',      'the name for this network. used for saving the network and results')
-cmd:option('--datasetdir',        'dataset',      'dataset source directory')
+cmd:option('--import',            '',                             'the containing folder of the network to load in')
+cmd:option('--coder',             '',                             'the containing folder of the autoencoder network to use as en/de-coder')
+cmd:option('--networks_dir',      'networks',                     'the directory to save the resulting networks in')
+cmd:option('--name',              'default',                      'the name for this network. used for saving the network and results')
+cmd:option('--datasetdir',        'dataset_DQN_breakout_trained', 'dataset source directory')
 
 cmd:option('--version',           'mark1',        'which network design version to use')
 
@@ -103,8 +103,8 @@ cutorch.synchronize()
 parameters, gradients = predictor:getParameters()
 print('Num parameters before loading:', #parameters)
 
-coder = torch.load(paths.concat(opt.networks_dir, opt.coder, 'vxnet.net'))
--- coder = build_atari_reconstruction_network_mark3(opt.dim_hidden, 24)
+-- coder = torch.load(paths.concat(opt.networks_dir, opt.coder, 'vxnet.net'))
+coder = build_atari_reconstruction_network_mark3(opt.dim_hidden, 24)
 
 encoder = coder.modules[1]
 decoder = nn.Sequential()
@@ -153,9 +153,17 @@ while true do
 
     local input_actions = batch_actions[{{1, batch_images:size(1) - 1}}]
 
-    local input  = encoder:forward(input_images)   -- z_t
-    local target = encoder:forward(target_images)  -- z_t+1
+    encoder:forward(input_images)
+    local input = {
+    	encoder.output[1]:clone(),
+    	encoder.output[2]:clone(),
+    }
 
+    encoder:forward(target_images)
+    local target = {
+    	encoder.output[1]:clone(),
+    	encoder.output[2]:clone(),
+    }
     -- input = input:cuda()
     -- target = target:cuda()
 

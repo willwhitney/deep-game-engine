@@ -76,16 +76,3 @@ function grayscale(image_batch)
     end
     return grayscale_batch
 end
-
-
-
-
-
-
-
-
-
-
-
-
-

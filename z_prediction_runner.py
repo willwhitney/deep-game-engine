@@ -14,7 +14,6 @@ if not os.path.exists("slurm_scripts"):
 
 networks_dir = '/om/user/wwhitney/deep-game-engine/networks/'
 base_networks = {
-    'angrand':        networks_dir + 'angrand',
     'rec_mark3_best': networks_dir + 'rec_mark3_best',
     }
 
@@ -37,75 +36,63 @@ jobs = [
         {
             'version': 'mark1',
             'coder': 'rec_mark3_best',
-            'datasetdir': 'dataset_DQN_breakout_trained',
-            'learning_rate': '-0.001',
-        },
-        {
-            'version': 'mark1',
-            'coder': 'rec_mark3_best',
-            'datasetdir': 'dataset_DQN_breakout_trained',
             'learning_rate': '-0.0001',
         },
         {
             'version': 'mark1',
             'coder': 'rec_mark3_best',
-            'datasetdir': 'dataset_DQN_breakout_trained',
+            'learning_rate': '-0.00005',
+        },
+        {
+            'version': 'mark1',
+            'coder': 'rec_mark3_best',
             'learning_rate': '-0.00001',
         },
         {
             'version': 'mark1',
             'coder': 'rec_mark3_best',
-            'datasetdir': 'dataset_DQN_breakout_trained',
             'learning_rate': '-0.000001',
         },
 
         {
             'version': 'mark2',
             'coder': 'rec_mark3_best',
-            'datasetdir': 'dataset_DQN_breakout_trained',
-            'learning_rate': '-0.001',
-        },
-        {
-            'version': 'mark2',
-            'coder': 'rec_mark3_best',
-            'datasetdir': 'dataset_DQN_breakout_trained',
             'learning_rate': '-0.0001',
         },
         {
             'version': 'mark2',
             'coder': 'rec_mark3_best',
-            'datasetdir': 'dataset_DQN_breakout_trained',
+            'learning_rate': '-0.00005',
+        },
+        {
+            'version': 'mark2',
+            'coder': 'rec_mark3_best',
             'learning_rate': '-0.00001',
         },
         {
             'version': 'mark2',
             'coder': 'rec_mark3_best',
-            'datasetdir': 'dataset_DQN_breakout_trained',
             'learning_rate': '-0.000001',
         },
 
         {
             'version': 'mark3',
             'coder': 'rec_mark3_best',
-            'datasetdir': 'dataset_DQN_breakout_trained',
-            'learning_rate': '-0.001',
-        },
-        {
-            'version': 'mark3',
-            'coder': 'rec_mark3_best',
-            'datasetdir': 'dataset_DQN_breakout_trained',
             'learning_rate': '-0.0001',
         },
         {
             'version': 'mark3',
             'coder': 'rec_mark3_best',
-            'datasetdir': 'dataset_DQN_breakout_trained',
+            'learning_rate': '-0.00005',
+        },
+        {
+            'version': 'mark3',
+            'coder': 'rec_mark3_best',
             'learning_rate': '-0.00001',
         },
         {
             'version': 'mark3',
             'coder': 'rec_mark3_best',
-            'datasetdir': 'dataset_DQN_breakout_trained',
             'learning_rate': '-0.000001',
         },
 
@@ -118,7 +105,7 @@ else:
     print "Starting jobs:"
 
 for job in jobs:
-    jobname = "z_prediction"
+    jobname = "z_pred"
     flagstring = ""
     for flag in job:
         if isinstance(job[flag], bool):
@@ -172,11 +159,3 @@ for job in jobs:
 
         if not dry_run:
             os.system("sbatch -N 1 -c 1 --gres=gpu:1 -p gpu --mem=8000 --time=6-23:00:00 slurm_scripts/" + jobname + ".slurm &")
-
-
-
-
-
-
-
-

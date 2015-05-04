@@ -530,16 +530,3 @@ function build_z_prediction_network_mark3(dim_hidden, input_replication, dim_pre
   collectgarbage()
   return model
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
