@@ -68,8 +68,9 @@ end
 predictor = torch.load(paths.concat(opt.networks_dir, opt.import, 'vxnet.net'))
 
 batch_images, batch_actions = load_atari_full_batch(MODE_TRAINING, 1)
-test_image = batch_images[1]:clone():reshape(1, 3, 210, 160)
-predicted_images = torch.Tensor(opt.bsize - 1, 3, 210, 160)
+batch_actions = batch_actions:cuda()
+test_image = batch_images[1]:clone():reshape(1, 3, 210, 160):cuda()
+predicted_images = torch.Tensor(opt.bsize - 1, 3, 210, 160):cuda()
 
 z_0 = encoder:forward(test_image)
 z_hat = {
@@ -88,5 +89,5 @@ for i = 1, 29 do
 	predicted_images[i] = decoder:forward(z_hat)
 end
 
-torch.save(paths.concat(output_dir, 'truth'), batch_images)
-torch.save(paths.concat(output_dir, 'prediction'), predicted_images)
+torch.save(paths.concat(output_dir, 'truth'), batch_images:float())
+torch.save(paths.concat(output_dir, 'prediction'), predicted_images:float())
