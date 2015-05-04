@@ -12,7 +12,7 @@ require 'modules/LinearCR'
 require 'modules/Reparametrize'
 require 'modules/SelectiveOutputClamp'
 require 'modules/SelectiveGradientFilter'
-require 'modules/Replicate'
+require 'modules/ReplicateLocal'
 require 'modules/MVNormalKLDCriterion'
 
 require 'rmsprop'
@@ -114,8 +114,14 @@ end
 
 if opt.import ~= '' then
   -- load all the values from the network stored in opt.import
-  lowerboundlist = torch.load(paths.concat(opt.networks_dir, opt.import, 'lowerbound.t7'))
-  lowerbound_test_list = torch.load(paths.concat(opt.networks_dir, opt.import, 'lowerbound_test.t7'))
+  lowerboundlist = torch.load(paths.concat(opt.networks_dir,
+                                           opt.import,
+                                           'lowerbound.t7'))
+
+  lowerbound_test_list = torch.load(paths.concat(opt.networks_dir,
+                                                 opt.import,
+                                                 'lowerbound_test.t7'))
+
   state = torch.load(paths.concat(opt.networks_dir, opt.import, 'state.t7'))
   p = torch.load(paths.concat(opt.networks_dir, opt.import, 'parameters.t7'))
   print('Loaded parameter size:', #p)
@@ -173,7 +179,7 @@ while true do
       local predictor_output = predictor:forward(input_joined)
 
       local KLDerr = KLD:forward(predictor_output, target)
-      print(KLDerr)
+      -- print(KLDerr)
       local dKLD_dw = KLD:backward(predictor_output, target)
 
       predictor:backward(input_joined, dKLD_dw)
@@ -235,4 +241,3 @@ while true do
     torch.save(opt.save .. '/lowerbound_test.t7', torch.Tensor(lowerbound_test_list))
   end
 end
-

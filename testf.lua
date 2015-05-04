@@ -142,7 +142,7 @@ function test_z_prediction(saveAll)
   local save_dir = paths.concat('tmp', opt.name, 'epoch_' .. epoch)
   os.execute('mkdir -p "' .. save_dir .. '"')
 
-   for test_index = 1, opt.tests_per_epoch do
+  for test_index = 1, opt.tests_per_epoch do
     -- disp progress
     xlua.progress(test_index, opt.tests_per_epoch)
     collectgarbage()
@@ -162,10 +162,10 @@ function test_z_prediction(saveAll)
 
     -- test samples
     local input_joined = {
-        input[1]:clone(),
-        input[2]:clone()
-      }
-    table.insert(input_joined, input_actions)
+      input[1]:clone(),
+      input[2]:clone(),
+      input_actions,
+    }
 
     local predictor_output = predictor:forward(input_joined)
     local KLDerr = KLD:forward(predictor_output, target)
@@ -173,7 +173,7 @@ function test_z_prediction(saveAll)
     lowerbound = lowerbound + KLDerr
 
     local pred_images = decoder:forward(predictor_output):float()
-    reconstruction = reconstruction + (pred_images-target_images:float()):norm()
+    reconstruction = reconstruction + (pred_images - target_images:float()):norm()
 
     if saveAll then
       -- local pred_images = decoder:forward(predictor_output):float()
@@ -186,7 +186,7 @@ function test_z_prediction(saveAll)
         torch.save(save_dir..'/truth' .. test_index, target_images:float())
       end
     end
- end
+  end
 
   -- timing
   time = sys.clock() - time
@@ -200,12 +200,3 @@ function test_z_prediction(saveAll)
   BCELogger:add{['BCE on reconstruction (test set)'] = reconstruction / opt.tests_per_epoch}
   return lowerbound
 end
-
-
-
-
-
-
-
-
-
