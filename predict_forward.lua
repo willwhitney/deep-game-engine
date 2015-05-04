@@ -126,8 +126,17 @@ local target_images = batch_images[{{2, batch_images:size(1)}}]
 
 local input_actions = batch_actions[{{1, batch_images:size(1) - 1}}]
 
-local input  = encoder:forward(input_images):clone()   -- z_t
-local target = encoder:forward(target_images):clone()  -- z_t+1
+encoder:forward(input_images)
+local input = {
+	encoder.output[1]:clone(),
+	encoder.output[2]:clone(),
+}
+encoder:forward(target_images)
+local target = {
+	encoder.output[1]:clone(),
+	encoder.output[2]:clone(),
+}
+
 
 -- test samples
 local input_joined = {
