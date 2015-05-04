@@ -52,6 +52,8 @@ cmd:option('--bsize', 30, 'number of samples per batch_images')
 cmd:text()
 opt = cmd:parse(arg)
 
+torch.setnumthreads(opt.threads)
+
 output_dir = paths.concat('prediction_tests', opt.name)
 os.execute('mkdir -p ' .. output_dir)
 
@@ -110,3 +112,32 @@ end
 
 torch.save(paths.concat(output_dir, 'truth'), batch_images:float())
 torch.save(paths.concat(output_dir, 'prediction'), predicted_images:float())
+
+
+
+--- the batch method
+
+local batch_images, batch_actions = load_atari_full_batch(MODE_TRAINING, 1)
+batch_images = batch_images:cuda()
+batch_actions = batch_actions:cuda()
+
+local input_images = batch_images[{{1, batch_images:size(1) - 1}}]
+local target_images = batch_images[{{2, batch_images:size(1)}}]
+
+local input_actions = batch_actions[{{1, batch_images:size(1) - 1}}]
+
+local input  = encoder:forward(input_images)   -- z_t
+local target = encoder:forward(target_images)  -- z_t+1
+
+-- test samples
+local input_joined = {
+		input[1]:clone(),
+		input[2]:clone(),
+		input_actions,
+	}
+
+local predictor_output = predictor:forward(input_joined)
+local pred_images = decoder:forward(predictor_output):float()
+
+torch.save(paths.concat(output_dir, 'batch_truth'), batch_images:float())
+torch.save(paths.concat(output_dir, 'batch_prediction'), pred_images:float())
