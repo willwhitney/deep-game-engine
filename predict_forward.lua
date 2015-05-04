@@ -59,10 +59,10 @@ MODE_TRAINING = "train"
 MODE_TEST = "test"
 
 coder = torch.load(paths.concat(opt.networks_dir, opt.coder, 'vxnet.net'))
-encoder = coder.modules[1]:clone()
+encoder = coder.modules[1]
 decoder = nn.Sequential()
 for i = 2, 3 do
-	decoder:add(coder.modules[i]:clone())
+	decoder:add(coder.modules[i])
 end
 
 predictor = torch.load(paths.concat(opt.networks_dir, opt.coder, 'vxnet.net'))
