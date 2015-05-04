@@ -86,14 +86,26 @@ z_hat = {
 	}
 
 for i = 1, 29 do
+	test_image = batch_images[i]:clone():reshape(1, 3, 210, 160):cuda()
+	z = encoder:forward(test_image)
 	input = {
-			z_hat[1]:clone(),
-			z_hat[2]:clone(),
+			z[1]:clone(),
+			z[2]:clone(),
 			torch.Tensor{batch_actions[i]},
 		}
 	z_hat = predictor:forward(input)
 
 	predicted_images[i] = decoder:forward(z_hat)
+
+
+	-- input = {
+	-- 		z_hat[1]:clone(),
+	-- 		z_hat[2]:clone(),
+	-- 		torch.Tensor{batch_actions[i]},
+	-- 	}
+	-- z_hat = predictor:forward(input)
+	--
+	-- predicted_images[i] = decoder:forward(z_hat)
 end
 
 torch.save(paths.concat(output_dir, 'truth'), batch_images:float())
