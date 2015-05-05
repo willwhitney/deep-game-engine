@@ -28,7 +28,9 @@ function MVNormalKLDCriterion:updateOutput(input, target)
     self.sigma_p   = self.sigma_p:copy(target[2]):exp():pow(1/2)
 
     -- log |\Sigma_q| / |\Sigma_p|
-    self.term1 = torch.log(torch.prod(self.sigma_q, 2)) - torch.log(torch.prod(self.sigma_p, 2))
+    -- this should be equivalent and doesn't have underflow issues
+    self.term1 = torch.sum(torch.log(self.sigma_q), 2) - torch.sum(torch.log(self.sigma_p), 2)
+    -- self.term1 = torch.log(torch.prod(self.sigma_q, 2)) - torch.log(torch.prod(self.sigma_p, 2))
     -- print("term1:", self.term1:norm())
 
     -- tr(\Sigma_q^{-1} * \Sigma_p)

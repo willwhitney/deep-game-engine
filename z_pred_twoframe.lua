@@ -99,8 +99,7 @@ cutorch.synchronize()
 parameters, gradients = predictor:getParameters()
 print('Num parameters before loading:', #parameters)
 
--- coder = torch.load(paths.concat(opt.networks_dir, opt.coder, 'vxnet.net'))
-coder = build_atari_reconstruction_network_mark3(opt.dim_hidden, 24)
+coder = torch.load(paths.concat(opt.networks_dir, opt.coder, 'vxnet.net'))
 
 encoder = coder.modules[1]
 decoder = nn.Sequential()
@@ -165,8 +164,6 @@ while true do
             encoder.output[1]:clone(),
             encoder.output[2]:clone(),
         }
-        -- input = input:cuda()
-        -- target = target:cuda()
 
         --Optimization function
         local opfunc = function(x)

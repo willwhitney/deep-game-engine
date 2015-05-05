@@ -104,7 +104,6 @@ parameters, gradients = predictor:getParameters()
 print('Num parameters before loading:', #parameters)
 
 coder = torch.load(paths.concat(opt.networks_dir, opt.coder, 'vxnet.net'))
--- coder = build_atari_reconstruction_network_mark3(opt.dim_hidden, 24)
 
 encoder = coder.modules[1]
 decoder = nn.Sequential()
