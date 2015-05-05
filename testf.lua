@@ -142,7 +142,7 @@ function test_z_prediction(saveAll)
     for test_index = 1, opt.tests_per_epoch do
         xlua.progress(test_index, opt.tests_per_epoch)
         collectgarbage()
-        
+
         local batch_images, batch_actions = load_random_atari_full_batch(MODE_TEST)
         batch_images = batch_images:cuda()
         batch_actions = batch_actions:cuda()
@@ -188,7 +188,6 @@ function test_z_prediction(saveAll)
     print("<trainer> time to test 1 sample = " .. (time * 1000) .. 'ms')
 
     print('KLD (test set)', lowerbound / opt.tests_per_epoch)
-    print('mean BCE reconstruction error (test set)', reconstruction / opt.tests_per_epoch)
     KLDLogger:add{['KLD (test set)'] = lowerbound / opt.tests_per_epoch}
     return lowerbound
 end

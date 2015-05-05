@@ -132,8 +132,6 @@ else
 end
 
 KLDLogger = optim.Logger(paths.concat(opt.save, 'test_KLD.log'))
-BCELogger = optim.Logger(paths.concat(opt.save, 'test_BCE.log'))
-reconstruction = 0
 
 while true do
   epoch = epoch + 1
@@ -164,10 +162,8 @@ while true do
     	encoder.output[1]:clone(),
     	encoder.output[2]:clone(),
     }
-    -- input = input:cuda()
-    -- target = target:cuda()
 
-    --Optimization function
+    -- Optimization function
     local opfunc = function(x)
       collectgarbage()
 

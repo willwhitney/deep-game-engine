@@ -128,8 +128,6 @@ else
 end
 
 KLDLogger = optim.Logger(paths.concat(opt.save, 'test_KLD.log'))
-BCELogger = optim.Logger(paths.concat(opt.save, 'test_BCE.log'))
-reconstruction = 0
 
 while true do
     epoch = epoch + 1
