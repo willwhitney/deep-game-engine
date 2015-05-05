@@ -135,6 +135,7 @@ while true do
 
     for i = 1, opt.epoch_size do
         xlua.progress(i, opt.epoch_size)
+        collectgarbage()
 
         --Prepare Batch
         local batch_images, batch_actions = load_random_atari_full_batch(MODE_TRAINING)
@@ -176,10 +177,10 @@ while true do
             predictor:zeroGradParameters()
 
             local input_joined = {
-                input_one[1]:clone(),
-                input_one[2]:clone(),
-                input_two[1]:clone(),
-                input_two[2]:clone(),
+                input_one[1],
+                input_one[2],
+                input_two[1],
+                input_two[2],
                 input_actions,
             }
 

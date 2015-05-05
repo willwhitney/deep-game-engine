@@ -165,8 +165,8 @@ function test_z_prediction(saveAll)
         }
 
         local input_joined = {
-            input[1]:clone(),
-            input[2]:clone(),
+            input[1],
+            input[2],
             input_actions,
         }
 
@@ -236,10 +236,10 @@ function test_z_prediction_twoframe(saveAll)
         }
 
         local input_joined = {
-            input_one[1]:clone(),
-            input_one[2]:clone(),
-            input_two[1]:clone(),
-            input_two[2]:clone(),
+            input_one[1],
+            input_one[2],
+            input_two[1],
+            input_two[2],
             input_actions,
         }
 
