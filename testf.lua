@@ -260,7 +260,6 @@ function test_z_prediction_twoframe(saveAll)
     print("<trainer> time to test 1 sample = " .. (time * 1000) .. 'ms')
 
     print('KLD (test set)', lowerbound / opt.tests_per_epoch)
-    print('mean BCE reconstruction error (test set)', reconstruction / opt.tests_per_epoch)
     KLDLogger:add{['KLD (test set)'] = lowerbound / opt.tests_per_epoch}
     return lowerbound
 end
