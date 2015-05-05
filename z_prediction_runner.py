@@ -31,77 +31,77 @@ jobs = [
         #     'epoch_size': 5,
         #     'tests_per_epoch': 5,
         # },
+        # {
+        #     'version': 'mark1',
+        #     'coder': 'rec_mark3_best',
+        #     'learning_rate': '-0.0001',
+        #     'epoch_size': 5,
+        #     'tests_per_epoch': 5,
+        # },
+
+        # the real jobs
         {
             'version': 'mark1',
             'coder': 'rec_mark3_best',
             'learning_rate': '-0.0001',
-            'epoch_size': 5,
-            'tests_per_epoch': 5,
+        },
+        {
+            'version': 'mark1',
+            'coder': 'rec_mark3_best',
+            'learning_rate': '-0.00005',
+        },
+        {
+            'version': 'mark1',
+            'coder': 'rec_mark3_best',
+            'learning_rate': '-0.00001',
+        },
+        {
+            'version': 'mark1',
+            'coder': 'rec_mark3_best',
+            'learning_rate': '-0.000001',
         },
 
-        # the real jobs
-        # {
-        #     'version': 'mark1',
-        #     'coder': 'rec_mark3_best',
-        #     'learning_rate': '-0.0001',
-        # },
-        # {
-        #     'version': 'mark1',
-        #     'coder': 'rec_mark3_best',
-        #     'learning_rate': '-0.00005',
-        # },
-        # {
-        #     'version': 'mark1',
-        #     'coder': 'rec_mark3_best',
-        #     'learning_rate': '-0.00001',
-        # },
-        # {
-        #     'version': 'mark1',
-        #     'coder': 'rec_mark3_best',
-        #     'learning_rate': '-0.000001',
-        # },
-        #
-        # {
-        #     'version': 'mark2',
-        #     'coder': 'rec_mark3_best',
-        #     'learning_rate': '-0.0001',
-        # },
-        # {
-        #     'version': 'mark2',
-        #     'coder': 'rec_mark3_best',
-        #     'learning_rate': '-0.00005',
-        # },
-        # {
-        #     'version': 'mark2',
-        #     'coder': 'rec_mark3_best',
-        #     'learning_rate': '-0.00001',
-        # },
-        # {
-        #     'version': 'mark2',
-        #     'coder': 'rec_mark3_best',
-        #     'learning_rate': '-0.000001',
-        # },
-        #
-        # {
-        #     'version': 'mark3',
-        #     'coder': 'rec_mark3_best',
-        #     'learning_rate': '-0.0001',
-        # },
-        # {
-        #     'version': 'mark3',
-        #     'coder': 'rec_mark3_best',
-        #     'learning_rate': '-0.00005',
-        # },
-        # {
-        #     'version': 'mark3',
-        #     'coder': 'rec_mark3_best',
-        #     'learning_rate': '-0.00001',
-        # },
-        # {
-        #     'version': 'mark3',
-        #     'coder': 'rec_mark3_best',
-        #     'learning_rate': '-0.000001',
-        # },
+        {
+            'version': 'mark2',
+            'coder': 'rec_mark3_best',
+            'learning_rate': '-0.0001',
+        },
+        {
+            'version': 'mark2',
+            'coder': 'rec_mark3_best',
+            'learning_rate': '-0.00005',
+        },
+        {
+            'version': 'mark2',
+            'coder': 'rec_mark3_best',
+            'learning_rate': '-0.00001',
+        },
+        {
+            'version': 'mark2',
+            'coder': 'rec_mark3_best',
+            'learning_rate': '-0.000001',
+        },
+
+        {
+            'version': 'mark3',
+            'coder': 'rec_mark3_best',
+            'learning_rate': '-0.0001',
+        },
+        {
+            'version': 'mark3',
+            'coder': 'rec_mark3_best',
+            'learning_rate': '-0.00005',
+        },
+        {
+            'version': 'mark3',
+            'coder': 'rec_mark3_best',
+            'learning_rate': '-0.00001',
+        },
+        {
+            'version': 'mark3',
+            'coder': 'rec_mark3_best',
+            'learning_rate': '-0.000001',
+        },
 
 
     ]
