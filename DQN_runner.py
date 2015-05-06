@@ -27,6 +27,7 @@ jobs = [
         # real jobs
         {
             'name': 'DQN_asteroids',
+            'import': None,
             'rom': 'asteroids',
             'learn': True,
         },
