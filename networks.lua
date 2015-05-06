@@ -516,7 +516,7 @@ function build_z_prediction_network_mark3(dim_hidden, input_replication, dim_pre
     return model
 end
 
--- like mark1, but super shallow
+-- take two frames at a time as input to get velocities
 function build_z_prediction_network_twoframe_mark1(dim_hidden, input_replication, dim_prediction)
     predictor = nn.Sequential()
 
@@ -525,6 +525,84 @@ function build_z_prediction_network_twoframe_mark1(dim_hidden, input_replication
     predictor:add(nn.Linear(dim_prediction, dim_prediction))
     predictor:add(nn.ReLU())
     predictor:add(nn.Linear(dim_prediction, dim_prediction))
+    predictor:add(nn.ReLU())
+
+    local z = nn.ConcatTable()
+
+    local mu = nn.Sequential()
+        mu:add(nn.LinearCR(dim_prediction, dim_hidden))
+    z:add(mu)
+
+    local sigma = nn.Sequential()
+        sigma:add(nn.LinearCR(dim_prediction, dim_hidden))
+    z:add(sigma)
+
+    ----------- Put it together -------------------------
+    local model = nn.Sequential()
+
+    local inputTable = nn.ParallelTable()
+        inputTable:add(nn.Identity())
+        inputTable:add(nn.Identity())
+        inputTable:add(nn.Identity())
+        inputTable:add(nn.Identity())
+        inputTable:add(nn.ReplicateLocal(input_replication, 2))
+    model:add(inputTable)
+
+    model:add(nn.JoinTable(2))
+    model:add(predictor)
+    model:add(z)
+
+    model:cuda()
+    collectgarbage()
+    return model
+end
+
+-- like mark1, but with a big expansion to give it room to breathe in the middle
+function build_z_prediction_network_twoframe_mark2(dim_hidden, input_replication, dim_prediction)
+    predictor = nn.Sequential()
+
+    predictor:add(nn.Linear(dim_hidden * 4 + input_replication, dim_prediction))
+    predictor:add(nn.ReLU())
+    predictor:add(nn.Linear(dim_prediction * 3, dim_prediction))
+    predictor:add(nn.ReLU())
+    predictor:add(nn.Linear(dim_prediction * 3, dim_prediction))
+    predictor:add(nn.ReLU())
+
+    local z = nn.ConcatTable()
+
+    local mu = nn.Sequential()
+        mu:add(nn.LinearCR(dim_prediction, dim_hidden))
+    z:add(mu)
+
+    local sigma = nn.Sequential()
+        sigma:add(nn.LinearCR(dim_prediction, dim_hidden))
+    z:add(sigma)
+
+    ----------- Put it together -------------------------
+    local model = nn.Sequential()
+
+    local inputTable = nn.ParallelTable()
+        inputTable:add(nn.Identity())
+        inputTable:add(nn.Identity())
+        inputTable:add(nn.Identity())
+        inputTable:add(nn.Identity())
+        inputTable:add(nn.ReplicateLocal(input_replication, 2))
+    model:add(inputTable)
+
+    model:add(nn.JoinTable(2))
+    model:add(predictor)
+    model:add(z)
+
+    model:cuda()
+    collectgarbage()
+    return model
+end
+
+-- like mark1, but shallow
+function build_z_prediction_network_twoframe_mark3(dim_hidden, input_replication, dim_prediction)
+    predictor = nn.Sequential()
+
+    predictor:add(nn.Linear(dim_hidden * 4 + input_replication, dim_prediction))
     predictor:add(nn.ReLU())
 
     local z = nn.ConcatTable()

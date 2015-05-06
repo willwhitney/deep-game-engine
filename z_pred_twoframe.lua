@@ -82,6 +82,10 @@ MODE_TEST = "test"
 
 if opt.version == 'mark1' then
     predictor = build_z_prediction_network_twoframe_mark1(opt.dim_hidden, opt.input_replication, opt.dim_prediction)
+elseif opt.version == 'mark2' then
+    predictor = build_z_prediction_network_twoframe_mark2(opt.dim_hidden, opt.input_replication, opt.dim_prediction)
+elseif opt.version == 'mark3' then
+    predictor = build_z_prediction_network_twoframe_mark3(opt.dim_hidden, opt.input_replication, opt.dim_prediction)
 else
     error("Invalid network version specified!")
 end
