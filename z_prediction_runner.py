@@ -14,7 +14,8 @@ if not os.path.exists("slurm_scripts"):
 
 networks_dir = '/om/user/wwhitney/deep-game-engine/networks/'
 base_networks = {
-    'rec_mark3_best': networks_dir + 'rec_mark3_best',
+    'rec_mark3_best':   networks_dir + 'rec_mark3_best',
+    'rec_mark3_highD':  networks_dir + 'rec_mark3_highD',
     }
 
 
@@ -33,7 +34,7 @@ jobs = [
         # },
         # {
         #     'version': 'mark1',
-        #     'coder': 'rec_mark3_best',
+        #     'coder': 'rec_mark3_highD',
         #     'learning_rate': '-0.0001',
         #     'epoch_size': 5,
         #     'tests_per_epoch': 5,
@@ -42,65 +43,23 @@ jobs = [
         # the real jobs
         {
             'version': 'mark1',
-            'coder': 'rec_mark3_best',
-            'learning_rate': '-0.0001',
-        },
-        {
-            'version': 'mark1',
-            'coder': 'rec_mark3_best',
+            'coder': 'rec_mark3_highD',
+            'dim_hidden': 400,
             'learning_rate': '-0.00005',
-        },
-        {
-            'version': 'mark1',
-            'coder': 'rec_mark3_best',
-            'learning_rate': '-0.00001',
-        },
-        {
-            'version': 'mark1',
-            'coder': 'rec_mark3_best',
-            'learning_rate': '-0.000001',
         },
 
         {
             'version': 'mark2',
-            'coder': 'rec_mark3_best',
-            'learning_rate': '-0.0001',
-        },
-        {
-            'version': 'mark2',
-            'coder': 'rec_mark3_best',
+            'coder': 'rec_mark3_highD',
+            'dim_hidden': 400,
             'learning_rate': '-0.00005',
-        },
-        {
-            'version': 'mark2',
-            'coder': 'rec_mark3_best',
-            'learning_rate': '-0.00001',
-        },
-        {
-            'version': 'mark2',
-            'coder': 'rec_mark3_best',
-            'learning_rate': '-0.000001',
         },
 
         {
             'version': 'mark3',
-            'coder': 'rec_mark3_best',
-            'learning_rate': '-0.0001',
-        },
-        {
-            'version': 'mark3',
-            'coder': 'rec_mark3_best',
+            'coder': 'rec_mark3_highD',
+            'dim_hidden': 400,
             'learning_rate': '-0.00005',
-        },
-        {
-            'version': 'mark3',
-            'coder': 'rec_mark3_best',
-            'learning_rate': '-0.00001',
-        },
-        {
-            'version': 'mark3',
-            'coder': 'rec_mark3_best',
-            'learning_rate': '-0.000001',
         },
 
 

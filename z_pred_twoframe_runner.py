@@ -33,37 +33,33 @@ jobs = [
         # },
 
         # the real jobs
+
         {
-            'version': 'mark2',
-            'coder': 'rec_mark3_best',
+            'version': 'mark1',
+            'coder': 'rec_mark3_highD',
+            'dim_hidden': 400,
             'learning_rate': '-0.0001',
         },
         {
-            'version': 'mark2',
-            'coder': 'rec_mark3_best',
+            'version': 'mark1',
+            'coder': 'rec_mark3_highD',
+            'dim_hidden': 400,
             'learning_rate': '-0.00005',
         },
-        {
-            'version': 'mark2',
-            'coder': 'rec_mark3_best',
-            'learning_rate': '-0.00001',
-        },
 
-        # {
-        #     'version': 'mark3',
-        #     'coder': 'rec_mark3_best',
-        #     'learning_rate': '-0.0001',
-        # },
-        # {
-        #     'version': 'mark3',
-        #     'coder': 'rec_mark3_best',
-        #     'learning_rate': '-0.00005',
-        # },
         {
             'version': 'mark3',
-            'coder': 'rec_mark3_best',
-            'learning_rate': '-0.00001',
+            'coder': 'rec_mark3_highD',
+            'dim_hidden': 400,
+            'learning_rate': '-0.0001',
         },
+        {
+            'version': 'mark3',
+            'coder': 'rec_mark3_highD',
+            'dim_hidden': 400,
+            'learning_rate': '-0.00005',
+        },
+
 
     ]
 
