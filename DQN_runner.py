@@ -30,6 +30,7 @@ jobs = [
             'import': None,
             'rom': 'asteroids',
             'learn': True,
+            'steps': 50000000,
         },
         # {
         #     'name': 'DQN_fishing_derby_trained',
