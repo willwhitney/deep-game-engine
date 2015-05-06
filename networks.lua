@@ -563,9 +563,9 @@ function build_z_prediction_network_twoframe_mark2(dim_hidden, input_replication
 
     predictor:add(nn.Linear(dim_hidden * 4 + input_replication, dim_prediction))
     predictor:add(nn.ReLU())
-    predictor:add(nn.Linear(dim_prediction * 3, dim_prediction))
+    predictor:add(nn.Linear(dim_prediction, dim_prediction * 2))
     predictor:add(nn.ReLU())
-    predictor:add(nn.Linear(dim_prediction * 3, dim_prediction))
+    predictor:add(nn.Linear(dim_prediction * 2, dim_prediction))
     predictor:add(nn.ReLU())
 
     local z = nn.ConcatTable()
