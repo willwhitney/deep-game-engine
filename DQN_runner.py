@@ -26,40 +26,38 @@ jobs = [
 
         # real jobs
         {
-            'name': 'DQN_breakout_trained',
-            'import': 'DQN_saving_params',
-            'rom': 'breakout',
-            'learn': False,
-            'steps': '10000000',
+            'name': 'DQN_asteroids',
+            'rom': 'asteroids',
+            'learn': True,
         },
-        {
-            'name': 'DQN_fishing_derby_trained',
-            'import': 'DQN_fishing_derby_saving_params',
-            'rom': 'fishing_derby',
-            'learn': False,
-            'steps': '10000000',
-        },
-        {
-            'name': 'DQN_freeway_trained',
-            'import': 'DQN_freeway_saving_params',
-            'rom': 'freeway',
-            'learn': False,
-            'steps': '10000000',
-        },
-        {
-            'name': 'DQN_seaquest_trained',
-            'import': 'DQN_seaquest_saving_params',
-            'rom': 'seaquest',
-            'learn': False,
-            'steps': '10000000',
-        },
-        {
-            'name': 'DQN_space_invaders_trained',
-            'import': 'DQN_space_invaders_saving_params',
-            'rom': 'space_invaders',
-            'learn': False,
-            'steps': '10000000',
-        },
+        # {
+        #     'name': 'DQN_fishing_derby_trained',
+        #     'import': 'DQN_fishing_derby_saving_params',
+        #     'rom': 'fishing_derby',
+        #     'learn': False,
+        #     'steps': '10000000',
+        # },
+        # {
+        #     'name': 'DQN_freeway_trained',
+        #     'import': 'DQN_freeway_saving_params',
+        #     'rom': 'freeway',
+        #     'learn': False,
+        #     'steps': '10000000',
+        # },
+        # {
+        #     'name': 'DQN_seaquest_trained',
+        #     'import': 'DQN_seaquest_saving_params',
+        #     'rom': 'seaquest',
+        #     'learn': False,
+        #     'steps': '10000000',
+        # },
+        # {
+        #     'name': 'DQN_space_invaders_trained',
+        #     'import': 'DQN_space_invaders_saving_params',
+        #     'rom': 'space_invaders',
+        #     'learn': False,
+        #     'steps': '10000000',
+        # },
     ]
 
 if dry_run:
@@ -121,7 +119,3 @@ for job in jobs:
 
         if not dry_run:
             os.system("sbatch -N 1 -c 1 --gres=gpu:1 -p gpu --mem=16000 --time=6-23:00:00 slurm_scripts/" + name + ".slurm &")
-
-
-
-
