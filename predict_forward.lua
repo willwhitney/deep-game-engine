@@ -75,39 +75,64 @@ print("encoder and decoder split")
 predictor = torch.load(paths.concat(opt.networks_dir, opt.import, 'vxnet.net'))
 print("predictor loaded")
 
-batch_images, batch_actions = load_atari_full_batch(MODE_TRAINING, 1)
-batch_actions = batch_actions:cuda()
-test_image = batch_images[1]:clone():reshape(1, 3, 210, 160):cuda()
-predicted_images = torch.Tensor(opt.bsize - 1, 3, 210, 160):cuda()
-print("data loaded")
 
-z_0 = encoder:forward(test_image)
-z_hat = {
-		z_0[1]:clone(),
-		z_0[2]:clone()
-	}
+if string.find(opt.import, '2frame') then
+	batch_images, batch_actions = load_atari_full_batch(MODE_TRAINING, 1)
+	batch_actions = batch_actions:cuda()
+	test_image_1 = batch_images[1]:clone():reshape(1, 3, 210, 160):cuda()
+	test_image_2 = batch_images[2]:clone():reshape(1, 3, 210, 160):cuda()
+	predicted_images = torch.Tensor(opt.bsize - 1, 3, 210, 160):cuda()
+	print("data loaded")
 
-for i = 1, 29 do
-	test_image = batch_images[i]:clone():reshape(1, 3, 210, 160):cuda()
-	z = encoder:forward(test_image)
-	input = {
-			z[1]:clone(),
-			z[2]:clone(),
-			torch.Tensor{batch_actions[i]},
+	z_1 = encoder:forward(test_image_1)
+	z_2 = encoder:forward(test_image_2)
+	z_hat_1 = {
+			z_1[1]:clone(),
+			z_1[2]:clone()
 		}
-	z_hat = predictor:forward(input)
+	z_hat_2 = {
+			z_2[1]:clone(),
+			z_2[2]:clone()
+		}
 
-	predicted_images[i] = decoder:forward(z_hat)
+	for i = 1, 28 do
+		input = {
+				z_hat_1[1]:clone(),
+				z_hat_1[2]:clone(),
+				z_hat_2[1]:clone(),
+				z_hat_2[2]:clone(),
+				torch.Tensor{batch_actions[i]},
+			}
+		z_hat_1 = z_hat_2
+		z_hat_2 = predictor:forward(input)
+
+		predicted_images[i] = decoder:forward(z_hat)
+	end
 
 
-	-- input = {
-	-- 		z_hat[1]:clone(),
-	-- 		z_hat[2]:clone(),
-	-- 		torch.Tensor{batch_actions[i]},
-	-- 	}
-	-- z_hat = predictor:forward(input)
-	--
-	-- predicted_images[i] = decoder:forward(z_hat)
+else
+	batch_images, batch_actions = load_atari_full_batch(MODE_TRAINING, 1)
+	batch_actions = batch_actions:cuda()
+	test_image = batch_images[1]:clone():reshape(1, 3, 210, 160):cuda()
+	predicted_images = torch.Tensor(opt.bsize - 1, 3, 210, 160):cuda()
+	print("data loaded")
+
+	z_1 = encoder:forward(test_image)
+	z_hat = {
+			z_1[1]:clone(),
+			z_1[2]:clone()
+		}
+
+	for i = 1, 29 do
+		input = {
+				z_hat[1]:clone(),
+				z_hat[2]:clone(),
+				torch.Tensor{batch_actions[i]},
+			}
+		z_hat = predictor:forward(input)
+
+		predicted_images[i] = decoder:forward(z_hat)
+	end
 end
 
 torch.save(paths.concat(output_dir, 'truth'), batch_images:float())
@@ -117,36 +142,36 @@ torch.save(paths.concat(output_dir, 'prediction'), predicted_images:float())
 
 --- the batch method
 
-local batch_images, batch_actions = load_atari_full_batch(MODE_TRAINING, 1)
-batch_images = batch_images:cuda()
-batch_actions = batch_actions:cuda()
-
-local input_images = batch_images[{{1, batch_images:size(1) - 1}}]
-local target_images = batch_images[{{2, batch_images:size(1)}}]
-
-local input_actions = batch_actions[{{1, batch_images:size(1) - 1}}]
-
-encoder:forward(input_images)
-local input = {
-	encoder.output[1]:clone(),
-	encoder.output[2]:clone(),
-}
-encoder:forward(target_images)
-local target = {
-	encoder.output[1]:clone(),
-	encoder.output[2]:clone(),
-}
-
-
--- test samples
-local input_joined = {
-		input[1]:clone(),
-		input[2]:clone(),
-		input_actions,
-	}
-
-local predictor_output = predictor:forward(input_joined)
-local pred_images = decoder:forward(predictor_output):float()
-
-torch.save(paths.concat(output_dir, 'batch_truth'), batch_images:float())
-torch.save(paths.concat(output_dir, 'batch_prediction'), pred_images:float())
+-- local batch_images, batch_actions = load_atari_full_batch(MODE_TRAINING, 1)
+-- batch_images = batch_images:cuda()
+-- batch_actions = batch_actions:cuda()
+--
+-- local input_images = batch_images[{{1, batch_images:size(1) - 1}}]
+-- local target_images = batch_images[{{2, batch_images:size(1)}}]
+--
+-- local input_actions = batch_actions[{{1, batch_images:size(1) - 1}}]
+--
+-- encoder:forward(input_images)
+-- local input = {
+-- 	encoder.output[1]:clone(),
+-- 	encoder.output[2]:clone(),
+-- }
+-- encoder:forward(target_images)
+-- local target = {
+-- 	encoder.output[1]:clone(),
+-- 	encoder.output[2]:clone(),
+-- }
+--
+--
+-- -- test samples
+-- local input_joined = {
+-- 		input[1]:clone(),
+-- 		input[2]:clone(),
+-- 		input_actions,
+-- 	}
+--
+-- local predictor_output = predictor:forward(input_joined)
+-- local pred_images = decoder:forward(predictor_output):float()
+--
+-- torch.save(paths.concat(output_dir, 'batch_truth'), batch_images:float())
+-- torch.save(paths.concat(output_dir, 'batch_prediction'), pred_images:float())
