@@ -226,7 +226,7 @@ else ----------------------------------------------
 
         if step%1000 == 0 then collectgarbage() end
 
-        if step % opt.eval_freq == 0 and step > learn_start then
+        if false then -- step % opt.eval_freq == 0 and step > learn_start then
 
             screen, reward, terminal = game_env:newGame()
 
@@ -337,4 +337,3 @@ else ----------------------------------------------
         end
     end
 end
-
