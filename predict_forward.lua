@@ -78,16 +78,16 @@ print("predictor loaded")
 
 if string.find(opt.import, '2frame') then
 	for batchNum = 1, 20 do
+		print("batch", batchNum)
 		batch_images, batch_actions = load_atari_full_batch(MODE_TRAINING, batchNum)
 		batch_actions = batch_actions:cuda()
 		batch_actions = batch_actions[{{2, batch_images:size(1) - 1}}]
 		test_image_1 = batch_images[1]:clone():reshape(1, 3, 210, 160):cuda()
 		test_image_2 = batch_images[2]:clone():reshape(1, 3, 210, 160):cuda()
 		predicted_images = torch.Tensor(opt.bsize - 1, 3, 210, 160):cuda()
-		print("data loaded")
 
-		z_1 = encoder:forward(test_image_1)
-		z_2 = encoder:forward(test_image_2)
+		z_1 = encoder:forward(test_image_1):clone()
+		z_2 = encoder:forward(test_image_2):clone()
 		z_hat_1 = {
 				z_1[1]:clone(),
 				z_1[2]:clone()
@@ -98,7 +98,6 @@ if string.find(opt.import, '2frame') then
 			}
 
 		for i = 1, 28 do
-		   print("step", i)
 			input = {
 					z_hat_1[1]:clone(),
 					z_hat_1[2]:clone(),
