@@ -9,4 +9,4 @@
 #SBATCH --mem=6000
 #SBATCH -p gpu
 
-th predict_forward.lua --import z_pred_2frame_coder_rec_mark3_best_version_mark1_learning_rate_-0.00001 --coder rec_mark3_best  --name test2frame
+th predict_forward.lua --import z_pred_2frame_coder_rec_mark3_best_version_mark1_learning_rate_-0.00001 --coder rec_mark3_best  --name test2frame_means
