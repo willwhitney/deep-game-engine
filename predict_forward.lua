@@ -86,16 +86,17 @@ if string.find(opt.import, '2frame') then
 		test_image_2 = batch_images[2]:clone():reshape(1, 3, 210, 160):cuda()
 		predicted_images = torch.Tensor(opt.bsize - 1, 3, 210, 160):cuda()
 
-		z_1 = encoder:forward(test_image_1):clone()
-		z_2 = encoder:forward(test_image_2):clone()
-		z_hat_1 = {
-				z_1[1]:clone(),
-				z_1[2]:clone()
-			}
-		z_hat_2 = {
-				z_2[1]:clone(),
-				z_2[2]:clone()
-			}
+		encoder:forward(test_image_1)
+        local z_hat_1 = {
+            encoder.output[1]:clone(),
+            encoder.output[2]:clone(),
+        }
+
+        encoder:forward(test_image_2)
+        local z_hat_2 = {
+            encoder.output[1]:clone(),
+            encoder.output[2]:clone(),
+        }
 
 		for i = 1, 28 do
 			input = {
