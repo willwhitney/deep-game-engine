@@ -1,7 +1,12 @@
 #!/bin/bash
 
-#SBATCH --job-name=DQN_freeway_saving_params
-#SBATCH --output=slurm_logs/DQN_freeway_saving_params.out
-#SBATCH --error=slurm_logs/DQN_freeway_saving_params.err
+#SBATCH --job-name=predict_forward_2frame
+#SBATCH --output=prediction_tests/out
+#SBATCH --error=prediction_tests/err
+#SBATCH -N 1
+#SBATCH -c 1
+#SBATCH --gres=gpu:1
+#SBATCH --mem=6000
+#SBATCH -p gpu
 
-./run_gpu freeway
+th predict_forward.lua --import z_pred_2frame_coder_rec_mark3_best_version_mark1_learning_rate_-0.00001 --coder rec_mark3_best  --name test2frame
