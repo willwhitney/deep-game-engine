@@ -89,14 +89,14 @@ if string.find(opt.import, '2frame') then
 		encoder:forward(test_image_1)
         local z_hat_1 = {
             encoder.output[1]:clone(),
-			torch.zeros(1, 200),
+			torch.zeros(1, 200):cuda(),
             -- encoder.output[2]:clone(),
         }
 
         encoder:forward(test_image_2)
         local z_hat_2 = {
             encoder.output[1]:clone(),
-			torch.zeros(1, 200),
+			torch.zeros(1, 200):cuda(),
             -- encoder.output[2]:clone(),
         }
 
@@ -112,7 +112,7 @@ if string.find(opt.import, '2frame') then
 			predictor:forward(input)
 			z_hat_2 = {
 				predictor.output[1]:clone(),
-				torch.zeros(1, 200),
+				torch.zeros(1, 200):cuda(),
 			--    predictor.output[2]:clone(),
 			}
 			predicted_images[i] = decoder:forward(z_hat_2)
