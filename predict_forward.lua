@@ -112,10 +112,11 @@ if string.find(opt.import, '2frame') then
 			predictor:forward(input)
 			z_hat_2 = {
 				predictor.output[1]:clone(),
-				torch.zeros(1, 200):cuda(),
-			--    predictor.output[2]:clone(),
+				-- torch.zeros(1, 200):cuda(),
+				predictor.output[2]:clone(),
 			}
 			predicted_images[i] = decoder:forward(z_hat_2)
+			z_hat_2[2] = torch.zeros(1, 200):cuda()
 		end
 		torch.save(paths.concat(output_dir, 'truth'..batchNum), batch_images:float())
 		torch.save(paths.concat(output_dir, 'prediction'..batchNum), predicted_images:float())
