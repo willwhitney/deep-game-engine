@@ -6,11 +6,11 @@ This repo contains the code for a deep neural network which learns to predict th
 
 <div>
 <div style="display:inline-block; max-width:300px;">
-	<img src="prediction_1frame.png">
+	<img src="slides/pred_1frame.png">
 	<p><b>Prediction using a single frame as input.</b> Note the uncertainty about moving components.</p>
 </div>
 <div width=300 style="display:inline-block; max-width:300px; float:right">
-	<img src="prediction_2frame.png">
+	<img src="slides/pred_2frame.png">
 	<p><b>Prediction using two frames as input.</b> Confidence about the future positions of moving objects greatly improved.</p>
 </div>
 </div>
@@ -36,3 +36,4 @@ To ensure that even small moving components are captured by the autoencoder, I p
 ![](slides/slides.005.png)
 ![](slides/slides.006.png)
 ![](slides/slides.007.png)
+
