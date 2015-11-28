@@ -6,13 +6,17 @@ This repo contains the code for a deep neural network which learns to predict th
 
 ### Single-frame prediction
 
-**Prediction using a single frame as input.** Note the uncertainty about moving components.
+**Prediction using a single frame as input.** The model takes in one frame of the game (the current screen) and produces a prediction for the next frame. The predicted frame for `t+1` is shown on the left in each column; the true frame which occurred at `t+1` is shown on the right side of each column.
+
+Note the uncertainty about moving components.
 
 <img src="slides/pred_1frame.png" width=500>
 
 ### Two-frame prediction
 
-**Prediction using two frames as input.** Confidence about the future positions of moving objects is greatly improved.
+**Prediction using two frames as input.** The model takes in the two previous frames (`t-1` and `t`) and produces a prediction for the next frame `t+1`. The predicted frame for `t+1` is shown on the left in each column; the true frame which occurred at `t+1` is shown on the right side of each column.
+
+Confidence about the future positions of moving objects is greatly improved versus the single-frame case.
 
 <img src="slides/pred_2frame.png" width=500>
 
