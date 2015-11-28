@@ -4,16 +4,19 @@ This repo contains the code for a deep neural network which learns to predict th
 
 ## Prediction results
 
-<div>
-<div style="display:inline-block; max-width:300px;">
-	<img src="slides/pred_1frame.png">
-	<p><b>Prediction using a single frame as input.</b> Note the uncertainty about moving components.</p>
-</div>
-<div width=300 style="display:inline-block; max-width:300px; float:right">
-	<img src="slides/pred_2frame.png">
-	<p><b>Prediction using two frames as input.</b> Confidence about the future positions of moving objects greatly improved.</p>
-</div>
-</div>
+### Single-frame prediction
+
+**Prediction using a single frame as input.** Note the uncertainty about moving components.
+
+<img src="slides/pred_1frame.png" width=500>
+
+### Two-frame prediction
+
+**Prediction using two frames as input.** Confidence about the future positions of moving objects is greatly improved.
+
+<img src="slides/pred_2frame.png" width=500>
+
+
 
 
 
