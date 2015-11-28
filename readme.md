@@ -28,7 +28,7 @@ Confidence about the future positions of moving objects is greatly improved vers
 
 ### Feature extraction with variational autoencoder
 
-The code for the feature extraction is based on my NIPS paper from 2015: [https://github.com/willwhitney/dc-ign](https://github.com/willwhitney/dc-ign) This yields a generative representation of the state.
+The code for the feature extraction is based on my NIPS paper from 2015: [https://github.com/willwhitney/dc-ign](https://github.com/willwhitney/dc-ign). This variational model yields a generative representation of the state.
 
 ![](slides/slides.002.png)
 This diagram is for the DC-IGN; this model does not have the structure show in th hidden representation.
