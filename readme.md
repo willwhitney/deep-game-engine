@@ -1,27 +1,38 @@
-# Things to try
+# Deep networks for game prediction
 
-## Optical flow
-- put a multiplier on the cost function for pixels that have flow
+This repo contains the code for a deep neural network which learns to predict the next frame of an Atari game from the previous one or two frames.
+
+## Prediction results
+
+<div>
+<div style="display:inline-block; max-width:300px;">
+	<img src="prediction_1frame.png">
+	<p><b>Prediction using a single frame as input.</b> Note the uncertainty about moving components.</p>
+</div>
+<div width=300 style="display:inline-block; max-width:300px; float:right">
+	<img src="prediction_2frame.png">
+	<p><b>Prediction using two frames as input.</b> Confidence about the future positions of moving objects greatly improved.</p>
+</div>
+</div>
 
 
-## Reconstruction
-- more feature maps on the decoder than encoder
-    + especially in the earlier layers of decoder (widen the narrow end of the funnel)
 
+## Model
 
-## Prediction
+### Feature extraction with variational autoencoder
 
-### End to end
-- reparametrize after prediction section
-- reparametrizing twice
-    + loss function is Loss[image_t+1, decoder(z_hat_t+1)] + KL(predictor) + KL(encoder)
+The code for the feature extraction is based on my NIPS paper from 2015: [https://github.com/willwhitney/dc-ign](https://github.com/willwhitney/dc-ign) This yields a generative representation of the state.
 
+![](slides/slides.002.png)
+This diagram is for the DC-IGN; this model does not have the structure show in th hidden representation.
 
-### Fixed encoder/decoder
-- predicting code layer z_hat_t+1, then testing reconstruction
-    + Loss[image_t+1, decoder(z_hat_t+1)]
-- predicting code layer, then testing against code layer
-    + Loss[z_t+1, z_hat_t+1]
+![](slides/slides.003.png)
+![](slides/slides.004.png)
 
-### Recurrence
+To ensure that even small moving components are captured by the autoencoder, I put a multiplier on the cost function for pixels that change from one frame to the next. This is extremely effective.
 
+### Stable prediction in feature-space
+
+![](slides/slides.005.png)
+![](slides/slides.006.png)
+![](slides/slides.007.png)
