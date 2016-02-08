@@ -16,7 +16,7 @@ function create_network(args)
 
     if args.gpu >= 0 then
         net:add(nn.Transpose({1,2},{2,3},{3,4}))
-        convLayer = nn.SpatialConvolutionCUDA
+        convLayer = nn.SpatialConvolution
     end
 
     net:add(convLayer(args.hist_len*args.ncols, args.n_units[1],

@@ -26,8 +26,15 @@ jobs = [
 
         # real jobs
         {
-            'name': 'DQN_asteroids',
-            'import': None,
+            'name': 'DQN_breakout_trained',
+            'import': 'DQN3_0_1_breakout_FULL_Y',
+            'rom': 'breakout',
+            'learn': False,
+            'steps': 90000,
+        },
+        {
+            'name': 'DQN_asteroids_trained',
+            'import': 'DQN_asteroids',
             'rom': 'asteroids',
             'learn': False,
             'steps': 90000,
@@ -39,13 +46,13 @@ jobs = [
             'learn': False,
             'steps': 90000,
         },
-        {
-            'name': 'DQN_freeway_trained',
-            'import': 'DQN_freeway_saving_params',
-            'rom': 'freeway',
-            'learn': False,
-            'steps': 90000,
-        },
+        # {
+        #     'name': 'DQN_freeway_trained',
+        #     'import': 'DQN_freeway_saving_params',
+        #     'rom': 'freeway',
+        #     'learn': False,
+        #     'steps': 90000,
+        # },
         {
             'name': 'DQN_seaquest_trained',
             'import': 'DQN_seaquest_saving_params',

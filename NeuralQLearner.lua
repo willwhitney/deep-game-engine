@@ -79,8 +79,14 @@ function nql:__init(args)
     local msg, err = pcall(require, self.network)
     if not msg then
         -- try to load saved agent
+        nn.SpatialConvolutionCUDA, _ = torch.class('nn.SpatialConvolutionCUDA', 'nn.Module')
+        nn.SpatialConvolutionCUDA = nn.SpatialConvolution
+        print(self.network)
+        -- exp = torch.load(self.network)
+
         local success, exp = pcall(torch.load, self.network)
         if not success then
+            print(exp)
             error("Could not load network file " .. self.network)
         end
         if self.best and exp.best_model then
