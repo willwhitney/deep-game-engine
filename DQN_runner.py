@@ -32,34 +32,34 @@ jobs = [
             'learn': False,
             'steps': 90000,
         },
-        # {
-        #     'name': 'DQN_fishing_derby_trained',
-        #     'import': 'DQN_fishing_derby_saving_params',
-        #     'rom': 'fishing_derby',
-        #     'learn': False,
-        #     'steps': '10000000',
-        # },
-        # {
-        #     'name': 'DQN_freeway_trained',
-        #     'import': 'DQN_freeway_saving_params',
-        #     'rom': 'freeway',
-        #     'learn': False,
-        #     'steps': '10000000',
-        # },
-        # {
-        #     'name': 'DQN_seaquest_trained',
-        #     'import': 'DQN_seaquest_saving_params',
-        #     'rom': 'seaquest',
-        #     'learn': False,
-        #     'steps': '10000000',
-        # },
-        # {
-        #     'name': 'DQN_space_invaders_trained',
-        #     'import': 'DQN_space_invaders_saving_params',
-        #     'rom': 'space_invaders',
-        #     'learn': False,
-        #     'steps': '10000000',
-        # },
+        {
+            'name': 'DQN_fishing_derby_trained',
+            'import': 'DQN_fishing_derby_saving_params',
+            'rom': 'fishing_derby',
+            'learn': False,
+            'steps': 90000,
+        },
+        {
+            'name': 'DQN_freeway_trained',
+            'import': 'DQN_freeway_saving_params',
+            'rom': 'freeway',
+            'learn': False,
+            'steps': 90000,
+        },
+        {
+            'name': 'DQN_seaquest_trained',
+            'import': 'DQN_seaquest_saving_params',
+            'rom': 'seaquest',
+            'learn': False,
+            'steps': 90000,
+        },
+        {
+            'name': 'DQN_space_invaders_trained',
+            'import': 'DQN_space_invaders_saving_params',
+            'rom': 'space_invaders',
+            'learn': False,
+            'steps': 90000,
+        },
     ]
 
 if dry_run:
